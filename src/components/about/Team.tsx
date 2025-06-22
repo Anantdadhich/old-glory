@@ -1,6 +1,6 @@
 "use client";
 
-import { Instagram, Mail } from "lucide-react";
+import { Facebook, FacebookIcon, Instagram, Mail } from "lucide-react";
 
 const team = [
   {
@@ -9,7 +9,7 @@ const team = [
     image: "/tan.jpeg",
     bio: "B.D.S. from Darshan Dental College and Hospital, Udaipur (University of Rajasthan) and M.D.S. from Kothiwal Dental College & Research Center, Moradabad (MJPR University, Bareilly).",
     linkedin: "https://www.instagram.com/drtanmaysharma/",
-    email: "drtanmaysharma@gmail.com",
+    email: "https://www.facebook.com/drtanmaysharma/",
   },
   {
     name: "Dr. Ridam Jain",
@@ -17,7 +17,7 @@ const team = [
     image: "/ridam.jpeg",
     bio: "B.D.S. from SDM Dental College, Dharwad, Karnataka and M.D.S. from Kothiwal Dental College, Moradabad, Uttar Pradesh.",
     linkedin: "https://www.instagram.com/oldgloryorthodontics/",
-    email: "ridam@oldglorydental.com",
+    email: "https://www.facebook.com/ridamluv",
   },
 ];
 
@@ -71,10 +71,10 @@ const Team = () => {
                     <Instagram size={20} />
                   </a>
                   <a
-                    href={`mailto:${member.email}`}
+                    href={member.email}
                     className="text-sky-600 hover:text-sky-800 transition-colors bg-sky-50 hover:bg-sky-100 p-2 rounded-full"
                   >
-                    <Mail size={20} />
+                    <FacebookIcon size={20} />
                   </a>
                 </div>
               </div>

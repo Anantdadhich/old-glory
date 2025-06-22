@@ -47,9 +47,9 @@ const Navbar = () => {
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center">
+            <Link href="/" className="flex items-center bg-white">
               <img
-                src="/lovable-uploads/520f915c-6d61-490c-9ad3-87ad606b1d93.png"
+                src="/logo.png"
                 alt="Old Glory Dental Clinic"
                 className="h-12 mr-3"
               />
@@ -116,7 +116,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between px-4 py-4 border-b">
           <Link href="/" className="flex items-center" onClick={() => setIsOpen(false)}>
             <img
-              src="/lovable-uploads/520f915c-6d61-490c-9ad3-87ad606b1d93.png"
+              src="/logo.png"
               alt="Old Glory Dental Clinic"
               className="h-10 mr-2"
             />

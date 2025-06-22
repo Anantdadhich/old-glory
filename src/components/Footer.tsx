@@ -10,7 +10,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center mb-4">
               <img
-                src="/lovable-uploads/520f915c-6d61-490c-9ad3-87ad606b1d93.png"
+                src="/logo.png"
                 alt="Old Glory Dental Clinic"
                 className="h-10 mr-3"
               />

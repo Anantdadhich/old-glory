@@ -103,7 +103,7 @@ export function Chatbot() {
       </Button>
 
       <div
-        className={`fixed bottom-20 right-4 w-[95%] sm:w-[90]%] md:max-w-md lg:w-96 h-[75vh] z-40 transition-all duration-500 ease-out transform ${
+        className={`fixed bottom-20 right-4 w-[95%] sm:w-[90]%] md:max-w-md lg:w-96 h-[72vh] z-40 transition-all duration-500 ease-out transform ${
           isOpen ? "translate-y-0 opacity-100 scale-100" : "translate-y-8 opacity-0 scale-95 pointer-events-none"
         }`}
       >
