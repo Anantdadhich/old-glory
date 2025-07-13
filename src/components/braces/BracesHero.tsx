@@ -37,7 +37,7 @@ const BracesHero = () => {
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4 mb-6">
               <Link
-                href="https://wa.me/917678245349"
+                href="https://wa.me/917678245349?text=Hi!%20I'd%20like%20to%20schedule%20a%20dental%20appointment%20🦷📅"
                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md transition duration-200 flex items-center gap-2"
               >
                 <MessageCircle className="w-5 h-5" />

@@ -70,7 +70,7 @@ const AmazingTransformations = () => {
         {/* CTA */}
         <div className="text-center mt-12">
           <Link
-            href="https://wa.me/917678245349"
+            href="https://wa.me/917678245349?text=Hi!%20I'd%20like%20to%20schedule%20a%20dental%20appointment%20🦷📅"
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold shadow-md transition duration-200  items-center gap-2 mx-auto inline-flex"
           >
             Start Your Transformation

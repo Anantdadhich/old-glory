@@ -9,7 +9,7 @@ const features = [
   {
     icon: <CreditCard className="h-8 w-8 text-green-500" />,
     title: "EMI Options Available",
-    description: "Flexible payment plans starting from ₹999/month",
+    description: "Flexible payment plans with no-cost EMI",
   },
   {
     icon: <Users className="h-8 w-8 text-blue-500" />,
@@ -19,7 +19,7 @@ const features = [
   {
     icon: <Award className="h-8 w-8 text-purple-500" />,
     title: "Experienced Orthodontists",
-    description: "10+ years of expertise in braces and alignment",
+    description: "15+ years of expertise in braces and alignment",
   },
 ];
 

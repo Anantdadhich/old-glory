@@ -99,7 +99,7 @@ const BracesTreatmentOptions = () => {
               </div>
 
               <Link
-                href="https://wa.me/917678245349"
+                href="https://wa.me/917678245349?text=Hi!%20I'd%20like%20to%20schedule%20a%20dental%20appointment%20🦷📅"
                 className="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200"
               >
                 Get Details

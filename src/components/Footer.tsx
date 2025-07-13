@@ -30,7 +30,7 @@ const Footer = () => {
                 <Instagram size={18} />
               </a>
               <a
-  href="https://wa.me/917678245349"
+   href="https://wa.me/917678245349?text=Hi!%20I'd%20like%20to%20schedule%20a%20dental%20appointment%20🦷📅"
   target="_blank"
   rel="noopener noreferrer"
   className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white hover:opacity-90 transition-opacity"
@@ -45,13 +45,13 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-lg mb-4 text-gray-800">Quick Links</h3>
             <ul className="space-y-2">
-              {["/", "/about", "/services", "/book", "/gallery", "/contact"].map((path, i) => (
+              {["/", "/about", "/services" ,"why", "/book", "/gallery", "/contact"].map((path, i) => (
                 <li key={path}>
                   <Link
                     href={path}
                     className="text-gray-600 hover:text-blue-700 transition-colors"
                   >
-                    {["Home", "About Us", "Our Services", "Book Appointment", "Gallery", "Contact Us"][i]}
+                    {["Home", "About Us", "Our Services", "Why" , "Book Appointment", "Gallery", "Contact Us"][i]}
                   </Link>
                 </li>
               ))}

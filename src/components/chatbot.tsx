@@ -105,10 +105,7 @@ export function Chatbot() {
   <Button
     onClick={() =>
       window.open(
-        "https://wa.me/917678245349?text=" +
-          encodeURIComponent(
-            "Hi! I want to chat with Old Glory Dental Clinic for a free consultation about braces treatment."
-          ),
+        "https://wa.me/917678245349?text=Hi!%20I'd%20like%20to%20schedule%20a%20dental%20appointment%20🦷📅",
         "_blank"
       )
     }
