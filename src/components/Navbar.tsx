@@ -5,6 +5,7 @@ import { Menu, X, Phone } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import path from "path";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +16,7 @@ const Navbar = () => {
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
+    { name: "Why", path: "/why" },
     { name: "Book Appointment", path: "/book" },
     { name: "Testimonials", path: "/testimonials" },
     { name: "Gallery", path: "/gallery" },
@@ -42,7 +44,7 @@ const Navbar = () => {
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           isScrolled
             ? "bg-white shadow-md py-2"
-            : "bg-white/90 backdrop-blur-md py-4"
+            : "bg-white/90 backdrop-blur-md py-3"
         )}
       >
         <div className="container mx-auto px-4">
@@ -51,22 +53,22 @@ const Navbar = () => {
               <img
                 src="/logo.png"
                 alt="Old Glory Dental Clinic"
-                className="h-12 mr-3"
+                className="h-10 mr-3"
               />
               <div className="hidden md:block">
-                <h1 className="font-bold text-xl text-blue-700">Old Glory</h1>
+                <h1 className="font-bold text-lg text-blue-700">Old Glory</h1>
                 <p className="text-sm text-green-600 font-medium">Dental Clinic</p>
               </div>
             </Link>
 
             {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center space-x-1">
+            <div className="hidden lg:flex items-center space-x-0.5">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.path}
                   className={cn(
-                    "px-4 py-2 rounded-md font-medium text-sm transition-colors hover:text-blue-700",
+                    "px-3 py-2 rounded-md font-medium text-sm transition-colors hover:text-blue-700 whitespace-nowrap",
                     location.startsWith(item.path)
                       ? "text-blue-700"
                       : "text-gray-600"

@@ -5,7 +5,7 @@ import { Bot, Send, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
 import { Input } from "./ui/input";
-import { FaTeeth, FaTooth } from "react-icons/fa";
+import {  FaTooth, FaWhatsapp } from "react-icons/fa";
 
 interface Message {
   role: "user" | "assistant";
@@ -101,12 +101,30 @@ export function Chatbot() {
       >
         {isOpen ? <X size={24} /> : "💬"}
       </Button>
+      <div className="hidden sm:flex">
+  <Button
+    onClick={() =>
+      window.open(
+        "https://wa.me/917678245349?text=" +
+          encodeURIComponent(
+            "Hi! I want to chat with Old Glory Dental Clinic for a free consultation about braces treatment."
+          ),
+        "_blank"
+      )
+    }
+    className="fixed bottom-24 right-4 z-50 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300"
+    aria-label="Chat on WhatsApp"
+  >
+    <FaWhatsapp className="w-6 h-6" />
+  </Button>
+</div>
 
-      <div
-        className={`fixed bottom-20 right-4 w-[95%] sm:w-[90]%] md:max-w-md lg:w-96 h-[72vh] z-40 transition-all duration-500 ease-out transform ${
-          isOpen ? "translate-y-0 opacity-100 scale-100" : "translate-y-8 opacity-0 scale-95 pointer-events-none"
-        }`}
-      >
+<div
+  className={`fixed bottom-20 right-4 md:right-24 w-[95%] sm:w-[90%] md:max-w-md lg:w-96 h-[72vh] z-40 transition-all duration-500 ease-out transform ${
+    isOpen ? "translate-y-0 opacity-100 scale-100" : "translate-y-8 opacity-0 scale-95 pointer-events-none"
+  }`}
+>
+
         <div
           ref={chatbotRef}
           className="h-full bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 flex flex-col overflow-hidden"
