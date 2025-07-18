@@ -30,7 +30,7 @@ const Footer = () => {
                 <Instagram size={18} />
               </a>
               <a
-   href="https://wa.me/917678245349?text=Hi!%20I'd%20like%20to%20schedule%20a%20dental%20appointment%20🦷📅"
+  href="https://wa.me/917678245349?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20dental%20services%20🙂"
   target="_blank"
   rel="noopener noreferrer"
   className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white hover:opacity-90 transition-opacity"

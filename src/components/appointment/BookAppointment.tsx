@@ -54,6 +54,9 @@ const BookAppointment = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
+          <div className="mb-2 inline-block bg-blue-50 text-blue-800 font-medium px-4 py-2 rounded-md text-sm shadow-sm">
+  ⚠️ 3 free braces consults left – book now!
+</div>
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
               Book Your Appointment
             </h2>

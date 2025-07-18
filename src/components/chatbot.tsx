@@ -105,7 +105,7 @@ export function Chatbot() {
   <Button
     onClick={() =>
       window.open(
-        "https://wa.me/917678245349?text=Hi!%20I'd%20like%20to%20schedule%20a%20dental%20appointment%20🦷📅",
+        "https://wa.me/917678245349?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20dental%20services%20🙂",
         "_blank"
       )
     }
