@@ -1,4 +1,4 @@
-import {  Star, Users, CreditCard, MessageCircle } from "lucide-react";
+import { Star, Users, CreditCard, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 const BracesHero = () => {
@@ -8,16 +8,23 @@ const BracesHero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Text Column */}
           <div className="max-w-xl animate-fade-in">
+            
+            {/* Alert Banner */}
+            <div className="mb-4 inline-block bg-blue-50 text-blue-800 font-medium px-4 py-2 rounded-md text-sm shadow-sm">
+              ⚠️ 3 free braces consults left – book now!
+            </div>
+
             <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl text-gray-800 mb-6">
               Affordable Braces with EMI in{" "}
               <span className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">
                 Jaipur
               </span>
             </h1>
+
             <p className="text-lg text-gray-600 mb-6">
               Get a perfect smile from Jaipur's trusted 4.9⭐ clinic with 1500+ happy patients.
             </p>
-            
+
             {/* Stats */}
             <div className="flex flex-wrap gap-6 mb-8">
               <div className="flex items-center gap-2">
@@ -37,7 +44,7 @@ const BracesHero = () => {
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4 mb-6">
               <Link
-               href="https://wa.me/917678245349?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20dental%20services%20🙂"
+                href="https://wa.me/917678245349?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20dental%20services%20🙂"
                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md transition duration-200 flex items-center gap-2"
               >
                 <MessageCircle className="w-5 h-5" />
@@ -47,15 +54,9 @@ const BracesHero = () => {
 
             {/* Features */}
             <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-              <span className="flex items-center gap-1">
-                ✨ No consultation fee
-              </span>
-              <span className="flex items-center gap-1">
-                💳 Easy EMI options
-              </span>
-              <span className="flex items-center gap-1">
-                📱 Instant booking
-              </span>
+              <span className="flex items-center gap-1">✨ No consultation fee</span>
+              <span className="flex items-center gap-1">💳 Easy EMI options</span>
+              <span className="flex items-center gap-1">📱 Instant booking</span>
             </div>
           </div>
 
@@ -73,10 +74,8 @@ const BracesHero = () => {
           </div>
         </div>
       </div>
-
-   
     </section>
   );
 };
 
-export default BracesHero; 
+export default BracesHero;
