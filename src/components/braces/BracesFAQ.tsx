@@ -1,87 +1,96 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import React, { useState } from "react";
+import { ChevronDown, MessageCircle } from "lucide-react";
 
 const faqs = [
   {
     question: "How much do braces cost and what EMI options are available?",
-    answer: "We offer flexible EMI plans for all types of braces, including metal, ceramic, and invisible options. You can choose monthly payments with durations up to 24 months. 0% interest EMI is available on select treatments. Our team will help you find the best plan based on your needs.",
+    answer: "We offer flexible EMI plans for all types of braces, including metal, ceramic, and invisible options. You can choose monthly payments with durations up to 24 months. 0% interest EMI is available on select treatments. Our team will help you find the best plan based on your needs during your free consultation."
   },
   {
     question: "How long does braces treatment take?",
-    answer: "Treatment duration varies depending on the complexity of your case and the type of braces chosen. Generally, treatment can take anywhere from 6 months to 2 years. Metal braces typically show results faster, while invisible aligners may take longer but are more comfortable.",
+    answer: "Treatment time varies by individual case complexity. Generally, it takes between 12 to 24 months. Simple alignments might take as little as 6-10 months, while complex bite corrections may take longer."
   },
   {
     question: "Do braces hurt and how to manage discomfort?",
-    answer: "Braces may cause some initial discomfort, especially after adjustments. This is normal and usually subsides within a few days. We provide pain management tips and can recommend over-the-counter pain relievers if needed. The discomfort is temporary and the results are worth it!",
+    answer: "You may feel mild discomfort or pressure for a few days after fitting or adjustments. This is normal and shows the braces are working! Over-the-counter pain relief and eating soft foods usually helps. Modern braces are much more comfortable than older styles."
   },
   {
     question: "How do I book an appointment?",
-    answer: "Booking an appointment is easy! You can call us directly, book through our website, or message us on WhatsApp for instant booking. We offer free consultations for new patients, so you can discuss your treatment options without any cost.",
+    answer: "You can book easily! Click the 'Book Free Consultation' button on this page, or message us directly on WhatsApp at +91 76782 45349. We also accept walk-ins based on availability."
   },
   {
     question: "What is the difference between metal and invisible braces?",
-    answer: "Metal braces are the most traditional and effective option, offering the fastest results for complex cases. Invisible braces (clear aligners) are nearly invisible and removable, making them perfect for professionals and those who prefer a more discreet option. Both are effective, but the choice depends on your lifestyle and treatment needs.",
+    answer: "Metal braces use brackets and wires and are generally the most affordable and fastest for complex issues. Invisible braces (Aligners) are clear plastic trays that are removable, nearly invisible, and very comfortable, making them ideal for adults and professionals."
   },
   {
     question: "Do you provide post-treatment retainers?",
-    answer: "Yes! Retainers are crucial for maintaining your perfect smile after braces treatment. We provide custom-fit retainers and include follow-up appointments to ensure your smile stays beautiful. Retainers help prevent teeth from shifting back to their original position.",
-  },
+    answer: "Yes! Retainers are a crucial part of the treatment to ensure your teeth stay in their new position. We provide custom-fit retainers included in your treatment plan discussion."
+  }
 ];
 
 const BracesFAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-4">
+    <section className="py-20 bg-[#F8F9FA]">
+      <div className="max-w-4xl mx-auto px-4 md:px-8">
+        
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-medium text-slate-900 mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Get answers to common questions about braces treatment
+          <p className="text-slate-500 text-lg">
+            Common questions about your journey to a perfect smile.
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-md mb-4 overflow-hidden"
+        <div className="space-y-4">
+          {faqs.map((faq, idx) => (
+            <div 
+              key={idx} 
+              className={`bg-white rounded-2xl overflow-hidden border transition-all duration-300 ${openIndex === idx ? 'border-[#1E4D58] shadow-lg' : 'border-slate-200 shadow-sm'}`}
             >
               <button
-                onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
+                className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
               >
-                <h3 className="text-lg font-semibold text-gray-800 pr-4">
-                  {faq.question}
-                </h3>
-                {openIndex === index ? (
-                  <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
-                ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
-                )}
+                <span className={`font-bold text-lg ${openIndex === idx ? 'text-[#1E4D58]' : 'text-slate-800'}`}>
+                    {faq.question}
+                </span>
+                <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${openIndex === idx ? 'rotate-180 text-[#1E4D58]' : ''}`} />
               </button>
               
-              {openIndex === index && (
-                <div className="px-6 pb-4">
-                  <p className="text-gray-600 leading-relaxed">
+              <div 
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === idx ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+              >
+                <div className="p-6 pt-0 text-slate-600 leading-relaxed">
                     {faq.answer}
-                  </p>
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>
+
+        {/* Still have questions banner */}
+        <div className="mt-12 bg-[#E0F2F7] rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-[#1E4D58]/10">
+            <div>
+                <h4 className="text-xl font-bold text-[#1E4D58] mb-1">Still have questions?</h4>
+                <p className="text-slate-600">Chat with us directly on WhatsApp.</p>
+            </div>
+            <a 
+                href="https://wa.me/917678245349?text=Hi%2C%20I%20have%20a%20question%20about%20braces%20🤔"
+                target="_blank"
+                className="bg-white text-[#1E4D58] px-6 py-3 rounded-full font-bold shadow-sm hover:shadow-md transition-all flex items-center gap-2"
+            >
+                <MessageCircle className="w-5 h-5" /> Ask on WhatsApp
+            </a>
+        </div>
+
       </div>
     </section>
   );
 };
 
-export default BracesFAQ; 
+export default BracesFAQ;

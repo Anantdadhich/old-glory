@@ -1,133 +1,152 @@
-import { Facebook, Instagram, Twitter, MapPin, Phone, Mail, Clock } from "lucide-react";
-import Link from "next/link";
-import  {FaWhatsapp}  from "react-icons/fa"
-const Footer = () => {
+"use client";
+
+import React from 'react';
+import { Facebook, Instagram, MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { FaWhatsapp } from 'react-icons/fa';
+import Link from 'next/link';
+
+ const Footer = () => {
   return (
-    <footer className="bg-gray-50 pt-16 pb-8">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-    
-          <div>
-            <div className="flex items-center mb-4">
-              <img
-                src="/logo.png"
-                alt="Old Glory Dental Clinic"
-                className="h-10 mr-3"
-              />
-              <div>
-                <h3 className="font-bold text-lg text-blue-700">Old Glory</h3>
-                <p className="text-sm text-green-600">Dental Clinic</p>
-              </div>
+    <footer className="bg-[#1E4D58] text-white pt-16 pb-8 px-4 md:px-12 rounded-t-[48px] mx-2 md:mx-4 mt-12 relative overflow-hidden">
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-24 relative z-10">
+        
+        {/* Column 1: Brand & Socials */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-3">
+            {/* Assuming logo.png might be dark, we add a brightness filter to make it white-ish if needed, 
+                or you can remove the filter if your logo is already suitable for dark bg */}
+            <img
+              src="/logo.png"
+              alt="Old Glory Dental Clinic"
+              className="h-12 w-auto brightness-0 invert opacity-90"
+            />
+            <div className="leading-tight">
+              <h3 className="font-bold text-xl text-white">Old Glory</h3>
+              <p className="text-xs text-[#AEE9F5] font-medium tracking-wider uppercase">Dental Clinic</p>
             </div>
-            <p className="text-gray-600 mb-4">
-              Providing exceptional dental care with a gentle touch. Your smile is our priority.
-            </p>
-            <div className="flex space-x-3">
-              <a href="https://www.facebook.com/oldgloryorthodontics/" className="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center text-white hover:opacity-90 transition-opacity">
-                <Facebook size={18} />
-              </a>
-              <a href="https://www.instagram.com/oldgloryorthodontics/" className="w-10 h-10 rounded-full bg-pink-700 flex items-center justify-center text-white hover:opacity-90 transition-opacity">
-                <Instagram size={18} />
-              </a>
-              <a
-  href="https://wa.me/917678245349?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20dental%20services%20🙂"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white hover:opacity-90 transition-opacity"
->
-  <FaWhatsapp size={18} />
-</a>
-            </div>
+          </div>
           
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="font-semibold text-lg mb-4 text-gray-800">Quick Links</h3>
-            <ul className="space-y-2">
-              {["/", "/about", "/services" ,"why", "/book", "/gallery", "/contact"].map((path, i) => (
-                <li key={path}>
-                  <Link
-                    href={path}
-                    className="text-gray-600 hover:text-blue-700 transition-colors"
-                  >
-                    {["Home", "About Us", "Our Services", "Why" , "Book Appointment", "Gallery", "Contact Us"][i]}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div>
-            <h3 className="font-semibold text-lg mb-4 text-gray-800">Our Services</h3>
-            <ul className="space-y-2">
-              {[
-                "General Dentistry",
-                "Cosmetic Dentistry",
-                "Dental Implants",
-                "Orthodontics",
-                "Pediatric Dentistry",
-                "RCT (Root Canal Therapy)",
-                "Emergency Care",
-                
-              ].map((service) => (
-                <li key={service}>
-                  <Link
-                    href="/services"
-                    className="text-gray-600 hover:text-blue-700 transition-colors"
-                  >
-                    {service}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h3 className="font-semibold text-lg mb-4 text-gray-800">Contact Us</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start">
-                <MapPin className="text-blue-700 mr-3 mt-1 shrink-0" size={18} />
-                <span className="text-gray-600">
-                124/505, Vikramaditya Marg 80 ft road, Main Gate, 
-                <br />
-                opposite Dwarika Das Residency, Sector 12,
-                <br />
-                 Mansarovar, Jaipur, Rajasthan 302020
-                </span>
-              </li>
-              <li className="flex items-start">
-                <Phone className="text-blue-700 mr-3 mt-1 shrink-0" size={18} />
-                <span className="text-gray-600">
-                  (+91) 92162 13329<br />
-                  (+91) 98874 93549
-                </span>
-              </li>
-              <li className="flex items-center">
-                <Mail className="text-blue-700 mr-3 shrink-0" size={18} />
-                <a href="mailto:drtanmaysharma@gmail.com" className="text-gray-600 hover:text-blue-700">
-                  drtanmaysharma@gmail.com
-                </a>
-              </li>
-              <li className="flex items-start">
-                <Clock className="text-blue-700 mr-3 mt-1 shrink-0" size={18} />
-                <span className="text-gray-600">
-                  Mon-Sat: 10:30 AM - 2:00 PM<br />
-                  5:30 PM –8:00 PM <br />
-                  Sun: Closed
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="border-t border-gray-200 mt-12 pt-8 text-center">
-          <p className="text-gray-600 text-sm">
-            © {new Date().getFullYear()} Old Glory Dental Clinic. All rights reserved.
+          <p className="text-slate-300 text-sm leading-relaxed max-w-xs">
+             Providing exceptional dental care with a gentle touch. Your smile is our priority.
           </p>
+          
+          {/* Social Icons - Styled like the reference */}
+          <div className="flex gap-3">
+             <a href="https://www.facebook.com/oldgloryorthodontics/" target="_blank" rel="noopener noreferrer" 
+                className="w-10 h-10 rounded-full border border-slate-500/50 flex items-center justify-center hover:bg-white hover:text-[#1E4D58] hover:border-white transition-all duration-300 group">
+                <Facebook size={18} />
+             </a>
+             <a href="https://www.instagram.com/oldgloryorthodontics/" target="_blank" rel="noopener noreferrer" 
+                className="w-10 h-10 rounded-full border border-slate-500/50 flex items-center justify-center hover:bg-white hover:text-[#1E4D58] hover:border-white transition-all duration-300 group">
+                <Instagram size={18} />
+             </a>
+             <a href="https://wa.me/917678245349?text=Hi" target="_blank" rel="noopener noreferrer" 
+                className="w-10 h-10 rounded-full border border-slate-500/50 flex items-center justify-center hover:bg-white hover:text-[#1E4D58] hover:border-white transition-all duration-300 group">
+                <FaWhatsapp size={18} />
+             </a>
+          </div>
         </div>
+
+        {/* Column 2: Quick Links */}
+        <div>
+           <h4 className="font-bold text-lg mb-6 text-white">Quick Links</h4>
+           <ul className="space-y-3 text-slate-300 text-sm font-medium">
+             {["Home", "About Us", "Our Services", "Why Us", "Book Appointment", "Gallery", "Contact Us"].map((item, i) => {
+                const paths = ["/", "/about", "/services", "/why", "/book", "/gallery", "/contact"];
+                return (
+                  <li key={item}>
+                    <Link href={paths[i]} className="hover:text-[#AEE9F5] hover:pl-2 transition-all duration-300 inline-block">
+                      {item}
+                    </Link>
+                  </li>
+                )
+             })}
+           </ul>
+        </div>
+
+        {/* Column 3: Services */}
+        <div>
+           <h4 className="font-bold text-lg mb-6 text-white">Our Services</h4>
+           <ul className="space-y-3 text-slate-300 text-sm font-medium">
+             {[
+               "General Dentistry",
+               "Cosmetic Dentistry",
+               "Dental Implants",
+               "Orthodontics",
+               "Pediatric Dentistry",
+               "Root Canal Therapy",
+               "Emergency Care",
+             ].map((service) => (
+               <li key={service}>
+                 <Link href="/services" className="hover:text-[#AEE9F5] hover:pl-2 transition-all duration-300 inline-block">
+                   {service}
+                 </Link>
+               </li>
+             ))}
+           </ul>
+        </div>
+
+        {/* Column 4: Contact Info */}
+        <div>
+           <h4 className="font-bold text-lg mb-6 text-white">Contact Us</h4>
+           <ul className="space-y-5 text-slate-300 text-sm">
+             <li className="flex items-start gap-3">
+               <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-[-4px]">
+                 <MapPin size={16} className="text-[#AEE9F5]" />
+               </div>
+               <span className="leading-relaxed">
+                 124/505, Vikramaditya Marg,<br/>
+                 Mansarovar, Jaipur,<br/>
+                 Rajasthan 302020
+               </span>
+             </li>
+             <li className="flex items-start gap-3">
+               <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                  <Phone size={16} className="text-[#AEE9F5]" />
+               </div>
+               <div className="flex flex-col">
+                 <span>(+91) 92162 13329</span>
+                 <span>(+91) 98874 93549</span>
+               </div>
+             </li>
+             <li className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                   <Mail size={16} className="text-[#AEE9F5]" />
+                </div>
+               <a href="mailto:drtanmaysharma@gmail.com" className="hover:text-white transition-colors break-all">
+                 drtanmaysharma@gmail.com
+               </a>
+             </li>
+             <li className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-[-4px]">
+                   <Clock size={16} className="text-[#AEE9F5]" />
+                </div>
+               <span>
+                 Mon-Sat: 10:30 AM - 8:00 PM<br />
+                 Sun: Closed
+               </span>
+             </li>
+           </ul>
+        </div>
+      </div>
+
+      {/* Decorative Big Text Background */}
+      <div className="absolute bottom-[-20px] left-[-20px] opacity-[0.03] pointer-events-none select-none">
+         <h1 className="text-[120px] md:text-[200px] font-bold text-white leading-none whitespace-nowrap">
+            Old Glory
+         </h1>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
+         <p className="text-slate-400 text-xs">
+           © {new Date().getFullYear()} Old Glory Dental Clinic. All rights reserved.
+         </p>
+         <div className="flex gap-2 text-xs text-slate-400 font-medium items-center">
+         
+            <Link href="https://www.comacks.com/" className="hover:text-white transition-colors">Powered by Comacks</Link>
+         </div>
       </div>
     </footer>
   );

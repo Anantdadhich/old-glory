@@ -1,115 +1,109 @@
-import { Shield, Eye, Gem, Lock } from "lucide-react";
-import Link from "next/link";
+"use client";
 
-const treatmentOptions = [
+import React from "react";
+import Link from "next/link";
+import { Check, ArrowRight, Zap } from "lucide-react";
+
+const options = [
   {
     title: "Metal Braces",
-    subtitle: "Traditional and most effective option",
-    description: "The most durable and fastest treatment option for complex cases",
-    features: ["Most durable", "Fastest treatment", "Cost-effective", "Best for complex cases"],
-    icon: <Shield className="h-8 w-8" />,
-    color: "#3B82F6",
-    popular: false,
+    subtitle: "Traditional & Most Effective",
+    desc: "The most durable and fastest treatment option for complex alignment cases.",
+    tags: ["Most Durable", "Fastest Treatment", "Cost-Effective"],
+    isPopular: false,
+    color: "bg-slate-50",
+    borderColor: "border-slate-100",
   },
   {
     title: "Invisible Braces",
-    subtitle: "Clear aligners for discrete treatment",
-    description: "Nearly invisible clear aligners perfect for professionals",
-    features: ["Nearly invisible", "Removable", "Comfortable", "Perfect for professionals"],
-    icon: <Eye className="h-8 w-8" />,
-    color: "#10B981",
-    popular: true,
+    subtitle: "Clear Aligners / Invisalign",
+    desc: "Nearly invisible, removable clear aligners. Perfect for working professionals.",
+    tags: ["Nearly Invisible", "Removable", "High Comfort"],
+    isPopular: true,
+    color: "bg-[#F0FDF4]",
+    borderColor: "border-green-100",
   },
   {
     title: "Ceramic Braces",
-    subtitle: "Tooth-colored brackets for aesthetics",
-    description: "Tooth-colored brackets that are less visible than traditional braces",
-    features: ["Tooth-colored", "Less visible", "Effective", "Great for adults"],
-    icon: <Gem className="h-8 w-8" />,
-    color: "#8B5CF6",
-    popular: false,
+    subtitle: "Tooth-Colored Aesthetics",
+    desc: "Tooth-colored brackets that blend with your teeth, offering a less visible alternative.",
+    tags: ["Tooth-Colored", "Less Visible", "Effective"],
+    isPopular: false,
+    color: "bg-slate-50",
+    borderColor: "border-slate-100",
   },
   {
     title: "Retainers",
-    subtitle: "Maintain your perfect smile post-treatment",
-    description: "Custom-fit retainers to maintain alignment and prevent relapse",
-    features: ["Maintains alignment", "Custom-fit", "Long-lasting", "Prevents relapse"],
-    icon: <Lock className="h-8 w-8" />,
-    color: "#F59E0B",
-    popular: false,
+    subtitle: "Post-Treatment Care",
+    desc: "Custom-fit retainers to maintain your perfect alignment and prevent relapse.",
+    tags: ["Maintains Alignment", "Custom-Fit", "Long-Lasting"],
+    isPopular: false,
+    color: "bg-slate-50",
+    borderColor: "border-slate-100",
   },
 ];
 
 const BracesTreatmentOptions = () => {
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-4">
+    <section className="py-20 bg-[#F8F9FA]">
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
+        
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-4">
+          <h2 className="text-3xl md:text-4xl font-medium text-slate-900 mb-4">
             Braces Treatment Options
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Choose the perfect solution to match your smile goals — guided by our experienced team
+          <p className="text-slate-500 text-lg max-w-2xl mx-auto">
+            We offer a range of solutions to suit your lifestyle and budget.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {treatmentOptions.map((option, index) => (
-            <div
-              key={index}
-              className="relative bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {options.map((opt, idx) => (
+            <div 
+              key={idx}
+              className={`relative flex flex-col p-6 rounded-[24px] border-2 ${opt.borderColor} ${opt.color} hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}
             >
-              {option.popular && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-gradient-to-r from-blue-500 to-green-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                    MOST POPULAR
-                  </span>
+              {opt.isPopular && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#1E4D58] text-white text-[10px] font-bold uppercase px-3 py-1 rounded-full shadow-md flex items-center gap-1">
+                   <Zap className="w-3 h-3 fill-current" /> Most Popular
                 </div>
               )}
+
+              <div className="mb-4">
+                  <h3 className="text-xl font-bold text-slate-900">{opt.title}</h3>
+                  <p className="text-xs font-bold text-[#1E4D58] uppercase tracking-wide mt-1">{opt.subtitle}</p>
+              </div>
               
-              <div className="flex items-start gap-4 mb-6">
-                <div 
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center"
-                  style={{ backgroundColor: `${option.color}15` }}
-                >
-                  <div style={{ color: option.color }}>{option.icon}</div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                    {option.title}
-                  </h3>
-                  <p className="text-gray-600 font-medium mb-2">
-                    {option.subtitle}
-                  </p>
-                  <p className="text-gray-600 text-sm">
-                    {option.description}
-                  </p>
-                </div>
+              <p className="text-sm text-slate-600 mb-6 leading-relaxed flex-grow">
+                {opt.desc}
+              </p>
+
+              <div className="space-y-2 mb-8">
+                {opt.tags.map((tag, tIdx) => (
+                    <div key={tIdx} className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                        <div className="w-4 h-4 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0">
+                            <Check className="w-2.5 h-2.5 text-[#1E4D58]" />
+                        </div>
+                        {tag}
+                    </div>
+                ))}
               </div>
 
-              <div className="mb-6">
-                <ul className="space-y-2">
-                  {option.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center gap-2 text-gray-700">
-                      <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <Link
-              href="https://wa.me/917678245349?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20dental%20services%20🙂"
-                className="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200"
+              <Link 
+                href={`https://wa.me/917678245349?text=Hi%2C%20I%20want%20details%20about%20${opt.title}%20🙂`}
+                target="_blank"
+                className="mt-auto w-full bg-white border border-[#1E4D58] text-[#1E4D58] py-3 rounded-xl font-bold text-sm hover:bg-[#1E4D58] hover:text-white transition-all flex items-center justify-center gap-2 group"
               >
                 Get Details
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );
 };
 
-export default BracesTreatmentOptions; 
+export default BracesTreatmentOptions;

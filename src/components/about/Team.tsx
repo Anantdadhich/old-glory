@@ -1,86 +1,109 @@
 "use client";
 
-import { Facebook, FacebookIcon, Instagram, Mail } from "lucide-react";
+import React from 'react';
+import { Instagram, Facebook, Quote } from 'lucide-react';
 
 const team = [
   {
     name: "Dr. Tanmay Sharma",
     role: "Orthodontist & Dental Surgeon",
     image: "/tan.jpeg",
-    bio: "B.D.S. from Darshan Dental College and Hospital, Udaipur (University of Rajasthan) and M.D.S. from Kothiwal Dental College & Research Center, Moradabad (MJPR University, Bareilly).",
-    linkedin: "https://www.instagram.com/drtanmaysharma/",
-    email: "https://www.facebook.com/drtanmaysharma/",
+    // Shortened slightly for UI balance, full details can go on a detail page if needed
+    bio: "Specialist in Orthodontics. B.D.S. from Darshan Dental College (Udaipur) and M.D.S. from Kothiwal Dental College (Moradabad).",
+    instagram: "https://www.instagram.com/drtanmaysharma/",
+    facebook: "https://www.facebook.com/drtanmaysharma/",
   },
   {
     name: "Dr. Ridam Jain",
-    role: "Orthodontist & Smile Design Expert",
+    role: "Orthodontist & Smile Expert",
     image: "/ridam.jpeg",
-    bio: "B.D.S. from SDM Dental College, Dharwad, Karnataka and M.D.S. from Kothiwal Dental College, Moradabad, Uttar Pradesh.",
-    linkedin: "https://www.instagram.com/oldgloryorthodontics/",
-    email: "https://www.facebook.com/ridamluv",
+    bio: "Expert in Smile Design. B.D.S. from SDM Dental College (Dharwad) and M.D.S. from Kothiwal Dental College (Moradabad).",
+    instagram: "https://www.instagram.com/oldgloryorthodontics/",
+    facebook: "https://www.facebook.com/ridamluv",
   },
 ];
 
 const Team = () => {
   return (
-    <section
-      id="team"
-      className="py-20 bg-gradient-to-br from-slate-50 via-white to-sky-50"
-    >
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <div className="flex justify-center mb-4">
-            <span className="inline-block w-16 h-1 rounded-full bg-sky-400"></span>
+    <section id="team" className="w-full px-4 md:px-8 lg:px-12 py-20 lg:py-28 bg-[#FAFCFD]">
+      <div className="max-w-6xl mx-auto">
+        
+        {/* --- Header Section --- */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1E4D58]/5 text-[#1E4D58] text-xs font-bold tracking-widest uppercase mb-4">
+             <span className="w-2 h-2 rounded-full bg-[#1E4D58]"></span>
+             Our Experts
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-2">
-            Meet Our Experts
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-slate-900 mb-6 leading-tight">
+            Meet Our Doctors
           </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            A compassionate team delivering exceptional dental care with precision and empathy.
+          <p className="text-slate-600 text-lg leading-relaxed">
+            Highly qualified specialists dedicated to crafting your perfect smile with precision and care.
           </p>
         </div>
 
-        <div className="grid gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+        {/* --- Team Grid --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 justify-center">
           {team.map((member, index) => (
-            <div
-              key={index}
-              className="bg-white border border-sky-100 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+            <div 
+                key={index} 
+                className="group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:shadow-[#1E4D58]/5 transition-all duration-500 flex flex-col md:flex-row items-center md:items-stretch"
             >
-              <div className="flex flex-col items-center px-6 py-10">
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-32 h-32 object-cover rounded-full border-4 border-white shadow-lg mb-4"
-                />
-                <h3 className="text-xl font-semibold text-slate-800 mb-1 text-center">
-                  {member.name}
+              
+              {/* Image Side (Reduced Size) */}
+              <div className="w-full md:w-5/12 relative overflow-hidden aspect-square md:aspect-auto">
+                 <div className="absolute inset-0 bg-[#1E4D58]/10 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none mix-blend-multiply"></div>
+                 <img
+                   src={member.image}
+                   alt={member.name}
+                   className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                 />
+              </div>
+              
+              {/* Content Side */}
+              <div className="w-full md:w-7/12 p-8 flex flex-col justify-center">
+                
+                {/* Quote Icon Decoration */}
+                <div className="mb-4">
+                    <Quote className="w-8 h-8 text-[#E0F2F7] fill-current" />
+                </div>
+
+                <h3 className="text-2xl font-bold text-slate-900 mb-1 group-hover:text-[#1E4D58] transition-colors">
+                    {member.name}
                 </h3>
-                <p className="text-sky-500 font-medium text-sm mb-4 text-center">
-                  {member.role}
+                <p className="text-xs font-bold text-[#1E4D58] uppercase tracking-wider mb-4">
+                    {member.role}
                 </p>
-                <p className="text-slate-600 text-center text-sm leading-relaxed mb-6">
-                  {member.bio}
+                
+                <p className="text-slate-600 text-sm leading-relaxed mb-6 border-l-2 border-[#E0F2F7] pl-4">
+                    {member.bio}
                 </p>
-                <div className="flex space-x-4">
-                  <a
-                    href={member.linkedin}
+                
+                {/* Social Actions */}
+                <div className="flex gap-3 mt-auto">
+                  <a 
+                    href={member.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sky-600 hover:text-sky-800 transition-colors bg-sky-50 hover:bg-sky-100 p-2 rounded-full"
+                    className="w-9 h-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-[#1E4D58] hover:text-white hover:border-[#1E4D58] transition-all duration-300"
                   >
-                    <Instagram size={20} />
+                    <Instagram className="w-4 h-4" />
                   </a>
-                  <a
-                    href={member.email}
-                    className="text-sky-600 hover:text-sky-800 transition-colors bg-sky-50 hover:bg-sky-100 p-2 rounded-full"
+                  <a 
+                    href={member.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-[#1E4D58] hover:text-white hover:border-[#1E4D58] transition-all duration-300"
                   >
-                    <FacebookIcon size={20} />
+                    <Facebook className="w-4 h-4" />
                   </a>
                 </div>
               </div>
+
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );

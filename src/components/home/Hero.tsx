@@ -1,71 +1,96 @@
-import { ChevronRight } from "lucide-react";
+"use client";
+
+import { ArrowUpRight, ShieldCheck, Star, Trophy } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const Hero = () => {
+  const [timeString, setTimeString] = useState("");
+  const [dayString, setDayString] = useState("");
+
+  useEffect(() => {
+    const now = new Date();
+    setTimeString(now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }));
+    setDayString(now.toLocaleDateString('en-US', { weekday: 'long' }));
+  }, []);
+
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-white to-[#E6F7FF] py-16 lg:py-28">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Text Column */}
-          <div className="max-w-xl animate-fade-in">
-            <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl text-gray-800 mb-6">
-              Your Healthy Smile <br />
-              <span className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">
-                Starts Here
-              </span>
-            </h1>
-            <p className="text-lg text-gray-600 mb-8">
-              At Old Glory Dental Clinic, we combine advanced technology with compassionate care
-              to provide you with the best dental experience possible.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/book"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md transition duration-200"
-              >
-                Book an Appointment
-              </Link>
-              <Link
-                href="/services"
-                className="flex items-center text-blue-600 font-medium px-6 py-3 hover:underline"
-              >
-                Our Services
-                <ChevronRight size={18} className="ml-1" />
-              </Link>
-            </div>
+    <section className="w-full px-4 md:px-8 py-10 lg:py-20 bg-gradient-to-br from-[#E0F2F7] via-[#c9eaf3] to-white ">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 h-full items-stretch">
+        
+        {/* --- Left Content Card --- */}
+        <div className=" rounded-[32px] p-8 md:p-12 flex flex-col justify-center gap-6 relative">
+          
+          {/* 1. Review Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full w-fit shadow-sm">
+             <Star className="w-4 h-4 fill-slate-800 text-slate-800" />
+             <span className="text-sm font-semibold text-slate-800">5.0 (4824 Reviews)</span>
           </div>
 
-          {/* Right Image Column */}
-          <div className="relative">
-            <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-blue-500 opacity-10 blur-3xl"></div>
-            <div className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-green-500 opacity-10 blur-3xl"></div>
-            <div className="relative z-10 rounded-2xl overflow-hidden shadow-xl">
-              <img
-                src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80&w=1000&auto=format&fit=crop"
-                alt="Dental Care"
-                className="w-full h-auto transform scale-105 transition-transform duration-700 hover:scale-100"
-              />
-            </div>
+          {/* 2. Headline (Restored to impactful size) */}
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-medium text-slate-800 leading-[1.1] tracking-tight">
+            Exceptional Dental Care, <br/>
+            Every Step Of The Way
+          </h1>
+          
+          {/* 3. Subheadline */}
+          <p className="text-slate-600 text-lg max-w-lg leading-relaxed">
+            Your smile deserves the best. Experience advanced dental solutions with a gentle touch, tailored for your comfort.
+          </p>
+
+          {/* 4. Action Buttons (Standard Size) */}
+          <div className="flex flex-wrap gap-4 mt-2">
+            <Link href="/book">
+                <button className="bg-[#1E4D58] text-white px-8 py-3.5 rounded-full font-medium hover:bg-[#163a42] transition-colors shadow-lg shadow-[#1E4D58]/20 text-base">
+                    Book Appointment
+                </button>
+            </Link>
+            <Link href="/services">
+                <button className="bg-transparent border border-[#1E4D58] text-[#1E4D58] px-8 py-3.5 rounded-full font-medium hover:bg-[#1E4D58]/5 transition-colors text-base">
+                    Get Started Today
+                </button>
+            </Link>
+          </div>
+
+          {/* 5. Bottom Cards (Comfortable Size) */}
+          <div className="mt-4 pt-8 border-t border-[#1E4D58]/10 flex flex-wrap gap-8 md:gap-12">
+             <div className="flex items-center gap-3">
+                <div className="bg-white p-2 rounded-full text-[#1E4D58]">
+                    <Trophy className="w-5 h-5" />
+                </div>
+                <div className="flex flex-col">
+                    <span className="font-bold text-[#1E4D58] text-lg leading-none">15+</span>
+                    <span className="text-sm text-[#1E4D58]/60">Years Experience</span>
+                </div>
+             </div>
+
+             <div className="flex items-center gap-3">
+                <div className="bg-white p-2 rounded-full text-[#1E4D58]">
+                    <ShieldCheck className="w-5 h-5" />
+                </div>
+                <div className="flex flex-col">
+                    <span className="font-bold text-[#1E4D58] text-lg leading-none">100%</span>
+                    <span className="text-sm text-[#1E4D58]/60">Safe & Sterile</span>
+                </div>
+             </div>
           </div>
         </div>
-      </div>
 
-      {/* SVG Shape Divider */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 120"
-          className="w-full h-auto"
+        {/* --- Right Image Column --- */}
+        <div 
+            className="relative h-[550px] lg:h-auto min-h-[550px] w-full rounded-[32px] overflow-hidden shadow-md bg-cover bg-center bg-no-repeat group"
+            style={{
+                backgroundImage: `url('https://plus.unsplash.com/premium_photo-1661580641740-f25355dae370?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`
+            }}
         >
-          <path
-            fill="#ffffff"
-            fillOpacity="1"
-            d="M0,64L60,64C120,64,240,64,360,53.3C480,43,600,21,720,26.7C840,32,960,64,1080,80C1200,96,1320,96,1380,96L1440,96L1440,120L1380,120C1320,120,1200,120,1080,120C960,120,840,120,720,120C600,120,480,120,360,120C240,120,120,120,60,120L0,120Z"
-          ></path>
-        </svg>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-60"></div>
+
+       
+        </div>
+
       </div>
     </section>
-  );
+  )
 };
 
 export default Hero;

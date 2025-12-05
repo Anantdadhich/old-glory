@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
       'images.unsplash.com',
     ],
   },
- 
+  serverExternalPackages: ["@xenova/transformers"],
 };
 
 export default nextConfig;
