@@ -31,11 +31,7 @@ const BracesHero = () => {
             
             {/* Trust Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-[#1E4D58]/10 rounded-full w-fit shadow-sm animate-fade-in-up">
-               <div className="flex -space-x-1">
-                  {[1,2,3].map((i) => (
-                      <div key={i} className="w-5 h-5 rounded-full bg-slate-200 border border-white" />
-                  ))}
-               </div>
+           
                <div className="flex items-center gap-1 pl-1">
                    <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
                    <span className="text-xs font-bold text-slate-800">Jaipur's #1 Rated Clinic</span>

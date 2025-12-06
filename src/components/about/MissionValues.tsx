@@ -94,7 +94,7 @@ const MissionValues = () => {
                             <Users className="w-5 h-5" />
                             <span className="text-xs font-bold uppercase tracking-wider">Trust</span>
                         </div>
-                        <div className="text-4xl md:text-5xl font-bold tracking-tight">15k+</div>
+                        <div className="text-4xl md:text-5xl font-bold tracking-tight">1.5k+</div>
                         <div className="text-teal-100/70 text-sm">Happy Patients</div>
                     </div>
 
