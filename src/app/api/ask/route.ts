@@ -273,7 +273,7 @@ function welcomeMessageNode() {
 function retrieveDoctorProfileNode(state: typeof AgentState.State) {
   const ridam = DOCTORS_DB.dr_ridam;
   const tanmay = DOCTORS_DB.dr_tanmay;
-  const responseText = `👨‍⚕️ Meet Our Specialists:\n\n1. ${ridam.name}\n${ridam.specialty}\n\n2. ${tanmay.name}\n${tanmay.specialty}`;
+  const responseText = `👨‍⚕️ Meet Our Specialists at Old Glory Dental`;
 
   return {
     selected_doctor_id: ridam.id,
@@ -282,17 +282,31 @@ function retrieveDoctorProfileNode(state: typeof AgentState.State) {
       { role: "assistant", content: responseText }
     ],
     final_response: {
-      type: "card",
+      type: "doctor_cards", // New type for multiple doctors
       text: responseText,
-      image: ridam.image_url,
+      doctors: [
+        {
+          id: ridam.id,
+          name: ridam.name,
+          specialty: ridam.specialty,
+          image: ridam.image_url,
+          bio: ridam.short_bio
+        },
+        {
+          id: tanmay.id,
+          name: tanmay.name,
+          specialty: tanmay.specialty,
+          image: tanmay.image_url,
+          bio: tanmay.short_bio
+        }
+      ],
       buttons: [
-        { label: "Details: Dr. Ridam", payload: `ACTION_DETAILS_dr_ridam` },
-        { label: "Details: Dr. Tanmay", payload: `ACTION_DETAILS_dr_tanmay` },
         { label: "Book Visit", payload: "ACTION_NAVIGATE_BOOKING" },
       ],
     },
   };
 }
+
 
 function retrieveDoctorDetailsNode(state: typeof AgentState.State) {
   const docId = state.selected_doctor_id || "dr_ridam";

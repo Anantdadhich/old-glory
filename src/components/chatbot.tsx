@@ -1,16 +1,24 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { MessageSquare, Send, X, User, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { MessageSquare, Send, X, User, ChevronLeft, ChevronRight } from "lucide-react";
 
 // --- Types ---
+interface Doctor {
+  id: string;
+  name: string;
+  specialty: string;
+  image: string;
+  bio: string;
+}
+
 interface Message {
   role: "user" | "assistant";
   content?: string;
-  type?: "text" | "card" | "welcome_card" | "booking_form";
+  type?: "text" | "card" | "welcome_card" | "booking_form" | "doctor_cards";
   text?: string;
   image?: string;
+  doctors?: Doctor[];
   buttons?: Array<{ label: string; payload: string }>;
   fields?: Array<{
     id: string;
@@ -45,6 +53,105 @@ const TypingIndicator = () => (
   </div>
 );
 
+// Doctor Carousel Component
+const DoctorCarousel = ({ doctors, onSelectDoctor }: { doctors: Doctor[], onSelectDoctor: (id: string, name: string) => void }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % doctors.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + doctors.length) % doctors.length);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 50) {
+      handleNext();
+    }
+    if (touchStart - touchEnd < -50) {
+      handlePrev();
+    }
+  };
+
+  const currentDoctor = doctors[currentIndex];
+
+  return (
+    <div className="relative">
+      <div 
+        className="relative overflow-hidden rounded-xl"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="relative bg-gradient-to-br from-slate-50 to-white border border-gray-200 rounded-xl overflow-hidden">
+          {/* Doctor Image */}
+          <div className="relative h-52 bg-gradient-to-br from-[#1E4D58]/5 to-[#2A9D8F]/5">
+            <img 
+              src={currentDoctor.image} 
+              alt={currentDoctor.name}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+          </div>
+
+          {/* Doctor Info */}
+          <div className="p-4">
+            <h3 className="font-bold text-gray-900 text-base mb-1">{currentDoctor.name}</h3>
+            <p className="text-xs text-[#1E4D58] font-medium mb-2">{currentDoctor.specialty}</p>
+            <p className="text-xs text-gray-600 leading-relaxed">{currentDoctor.bio}</p>
+            
+            <button
+              onClick={() => onSelectDoctor(`ACTION_DETAILS_${currentDoctor.id}`, `Details: ${currentDoctor.name}`)}
+              className="mt-3 w-full bg-[#1E4D58] hover:bg-[#163a42] text-white text-xs font-medium py-2 px-4 rounded-lg transition-colors"
+            >
+              View Details
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation Buttons */}
+      {doctors.length > 1 && (
+        <>
+      
+          <button
+            onClick={handleNext}
+            className="absolute right-1 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-1.5 rounded-full shadow-lg transition-all hover:scale-110"
+          >
+            <ChevronRight className="w-3 h-3" />
+          </button>
+        </>
+      )}
+
+      {/* Dots Indicator */}
+      {doctors.length > 1 && (
+        <div className="flex justify-center gap-1.5 mt-3">
+          {doctors.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentIndex(idx)}
+              className={`h-1.5 rounded-full transition-all ${
+                idx === currentIndex ? 'w-6 bg-[#1E4D58]' : 'w-1.5 bg-gray-300'
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -54,7 +161,6 @@ export function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
 
-  // --- 1. Auto-Open & Initialize Chat ---
   useEffect(() => {
     const initChat = async () => {
       if (hasInitialized.current) return;
@@ -76,6 +182,7 @@ export function Chatbot() {
           text: data.text || "Hello! How can I help you?",
           image: data.image,
           buttons: data.buttons,
+          doctors: data.doctors,
           content: data.text 
         };
         setMessages([welcomeMsg]);
@@ -102,7 +209,6 @@ export function Chatbot() {
     scrollToBottom();
   }, [messages, isOpen, isLoading]);
 
-  // --- 2. Handle Sending Messages ---
   const handleSendMessage = async (text: string, isUser: boolean = true, payload?: string) => {
     if (!text.trim() && !payload) return;
 
@@ -139,6 +245,7 @@ export function Chatbot() {
         type: data.type || "text",
         text: data.text || data.answer || "Sorry, I couldn't get a response.",
         image: data.image,
+        doctors: data.doctors,
         buttons: data.buttons,
         fields: data.fields,
         submitButton: data.submitButton,
@@ -164,7 +271,6 @@ export function Chatbot() {
     handleSendMessage(input);
   };
 
-  // --- 3. Handle Button Clicks ---
   const handleOptionClick = (payload: string, label: string) => {
     if (payload.startsWith('http') || payload.startsWith('tel:')) {
       window.open(payload, '_blank');
@@ -173,7 +279,6 @@ export function Chatbot() {
     handleSendMessage(label, true, payload);
   };
 
-  // --- 4. Handle Booking Form Submit (Simplified) ---
   const handleBookingSubmit = async (e: React.FormEvent, fields: any[]) => {
     e.preventDefault();
     
@@ -185,52 +290,49 @@ export function Chatbot() {
       return;
     }
 
-    // Add user message showing what they submitted
     setMessages((prev) => [
       ...prev, 
       { role: "user", content: `Book appointment for ${name} (${phone})` }
     ]);
 
-    // Simulate loading
     setIsLoading(true);
-
-    // Wait 1 second to simulate processing
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Show success message
     setMessages((prev) => [
       ...prev,
       { 
         role: "assistant", 
-        content: `✅ Success! Thank you ${name}! 
-
-We've received your booking request. Our team will call you at ${phone} shortly to confirm your appointment.
-
-Looking forward to seeing you at Old Glory Dental! 😊`
+        content: `✅ Success! Thank you ${name}!\n\nWe've received your booking request. Our team will call you at ${phone} shortly to confirm your appointment.\n\nLooking forward to seeing you at Old Glory Dental! 😊`
       }
     ]);
 
-    // Clear form and loading
     setBookingFormData({});
     setIsLoading(false);
-
-    // Optional: Log to console for now
     console.log('Booking submitted:', { name, phone });
   };
 
-  // --- 5. Render Message Content ---
   const renderContent = (msg: Message) => {
     const textContent = msg.text || msg.content;
 
     return (
       <div className="flex flex-col gap-3 w-full">
-        {msg.image && (
+        {msg.image && !msg.doctors && (
           <div className="relative w-full h-32 rounded-lg overflow-hidden mb-1 border border-slate-100">
             <img src={msg.image} alt="Visual" className="w-full h-full object-cover" />
           </div>
         )}
         
         <div className="whitespace-pre-wrap">{textContent}</div>
+
+        {/* Doctor Carousel */}
+        {msg.type === "doctor_cards" && msg.doctors && msg.doctors.length > 0 && (
+          <div className="mt-2">
+            <DoctorCarousel 
+              doctors={msg.doctors} 
+              onSelectDoctor={handleOptionClick}
+            />
+          </div>
+        )}
 
         {/* Booking Form */}
         {msg.type === "booking_form" && msg.fields && (
@@ -286,7 +388,6 @@ Looking forward to seeing you at Old Glory Dental! 😊`
   return (
     <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end gap-4 font-sans">
       
-      {/* --- Chat Window --- */}
       <div 
         className={`
           origin-bottom-right transition-all duration-300 ease-in-out
@@ -298,7 +399,6 @@ Looking forward to seeing you at Old Glory Dental! 😊`
         `}
       >
         
-        {/* Header */}
         <div className="bg-[#1E4D58] p-4 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="relative">
@@ -320,7 +420,6 @@ Looking forward to seeing you at Old Glory Dental! 😊`
           </button>
         </div>
 
-        {/* Messages Area */}
         <div className="flex-1 bg-[#FDFBF7] p-4 overflow-y-auto flex flex-col gap-6 scrollbar-hide">
           {messages.map((msg, index) => (
             <div 
@@ -329,7 +428,6 @@ Looking forward to seeing you at Old Glory Dental! 😊`
             >
               <div className={`flex max-w-[85%] gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                 
-                {/* Avatar */}
                 <div className={`
                   w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border
                   ${msg.role === 'user' ? 'bg-[#1E4D58] border-[#1E4D58] text-white' : 'bg-white border-gray-200'}
@@ -341,7 +439,6 @@ Looking forward to seeing you at Old Glory Dental! 😊`
                   )}
                 </div>
 
-                {/* Message Bubble */}
                 <div className="flex flex-col gap-1">
                   <div className={`
                     p-3.5 shadow-sm text-sm leading-relaxed
@@ -364,7 +461,6 @@ Looking forward to seeing you at Old Glory Dental! 😊`
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input Area */}
         <div className="bg-white border-t border-gray-100 shrink-0">
           <div className="p-3">
             <form 
@@ -402,7 +498,6 @@ Looking forward to seeing you at Old Glory Dental! 😊`
         </div>
       </div>
 
-      {/* --- WhatsApp Button --- */}
       <div className={`transition-all duration-300 ${isOpen ? 'translate-y-4 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
         <a 
           href="https://wa.me/918875700500?text=Hi%2C%20I%20want%20to%20book%20an%20appointment"
@@ -415,7 +510,6 @@ Looking forward to seeing you at Old Glory Dental! 😊`
         </a>
       </div>
 
-      {/* --- Main Toggle Button --- */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className="w-16 h-16 rounded-full bg-[#1E4D58] hover:bg-[#163a42] text-white shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] transition-all hover:scale-105 flex items-center justify-center z-[100] relative"
