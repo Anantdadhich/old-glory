@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://oldglorydental.com", // Replace with your actual domain
+    url: "https://oldglory.in", 
     title: "Old Glory Dental | Expert Family & Cosmetic Dentistry",
     description:
       "Compassionate and advanced dental care for the whole family. Schedule your visit today.",

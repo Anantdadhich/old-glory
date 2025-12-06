@@ -1,12 +1,38 @@
 import { Document } from "@langchain/core/documents";
 import { PineconeStore } from "@langchain/pinecone";
 import { Pinecone } from "@pinecone-database/pinecone";
-//@ts-ignore
-import { HuggingFaceTransformersEmbeddings } from "@langchain/community/embeddings/hf_transformers";
+import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import * as dotenv from "dotenv";
+import * as path from "path";
+import * as fs from "fs";
 
+// Find .env file by going up directories
+function findEnvFile(): string {
+  let currentDir = __dirname;
+  
+  // Try up to 5 levels up
+  for (let i = 0; i < 5; i++) {
+    const envPath = path.join(currentDir, '.env');
+    const envLocalPath = path.join(currentDir, '.env.local');
+    
+    if (fs.existsSync(envLocalPath)) {
+      console.log(`✅ Found .env.local at: ${envLocalPath}`);
+      return envLocalPath;
+    }
+    if (fs.existsSync(envPath)) {
+      console.log(`✅ Found .env at: ${envPath}`);
+      return envPath;
+    }
+    
+    currentDir = path.join(currentDir, '..');
+  }
+  
+  throw new Error('Could not find .env or .env.local file');
+}
 
-dotenv.config({ path: '.env.local' });
+// Load environment variables
+const envPath = findEnvFile();
+dotenv.config({ path: envPath });
 
 const getEnv = (name: string): string => {
   const value = process.env[name];
@@ -16,11 +42,12 @@ const getEnv = (name: string): string => {
   return value;
 };
 
+
 const PINECONE_API_KEY = getEnv("PINECONE_API_KEY");
 const PINECONE_INDEX_NAME = getEnv("PINECONE_INDEX_NAME");
+const GOOGLE_API_KEY = getEnv("GOOGLE_API_KEY");
 
 const documentData = [
-
   {
     name: "services_offered.txt",
     content: `Q: What services does your dental clinic offer?  
@@ -49,7 +76,7 @@ A: We recommend booking an appointment to avoid wait times, but we do accept wal
     name: "how_to_book.txt",
     content: `Q: How can I book an appointment?  
 Category: Booking  
-A: You can book an appointment by calling us at +91 88757 00500, visiting our website at www.oldglory.in, or sending a WhatsApp message to +91 88757 00500.`
+A: You can book an appointment by calling us at +91 88757 00500, visiting our website at [www.oldglory.in](https://www.oldglory.in), or sending a WhatsApp message to +91 88757 00500.`
   },
   {
     name: "child_friendly.txt",
@@ -57,8 +84,6 @@ A: You can book an appointment by calling us at +91 88757 00500, visiting our we
 Category: Services  
 A: Yes, we provide pediatric dental care and our clinic is equipped to make children feel comfortable and at ease.`
   },
-
- 
   {
     name: "aftercare_extraction.txt",
     content: `Q: What should I do after a tooth extraction?  
@@ -83,8 +108,6 @@ A: Yes. After a cleaning, you can eat right away. After a filling, wait 1–2 ho
 Category: Aftercare  
 A: Mild discomfort is common, but if you experience severe pain, swelling, or fever, contact us immediately for follow-up care.`
   },
-
-
   {
     name: "missed_appointment.txt",
     content: `Q: What if I miss my appointment?  
@@ -101,10 +124,8 @@ A: Yes, we provide same-day emergency care for dental pain, swelling, broken tee
     name: "contact_info.txt",
     content: `Q: How can I contact you?  
 Category: Contact  
-A: You can call us at +91 88757 00500, WhatsApp us at +91 88757 00500, or email us at drtanmaysharma@gmail.com. Our team is responsive and ready to assist you.`
+A: You can call us at +91 88757 00500, WhatsApp us at +91 88757 00500, or email us at [drtanmaysharma@gmail.com](mailto:drtanmaysharma@gmail.com). Our team is responsive and ready to assist you.`
   },
-
-  
   {
     name: "service_cost.txt",
     content: `Q: How much do your services cost?  
@@ -129,8 +150,6 @@ A: Yes, for certain treatments like implants, braces, and smile makeovers, we of
 Category: Pricing  
 A: Yes, after an initial consultation and diagnosis, we provide a detailed treatment plan with cost estimates.`
   },
-
-
   {
     name: "team_info.txt",
     content: `Q: Who are your dentists?  
@@ -155,8 +174,6 @@ A: We use modern dental technology including digital X-rays, intraoral scanners,
 Category: Hygiene  
 A: Absolutely. We follow strict infection control protocols, including sterilization of instruments, disposable materials, and regular clinic sanitation.`
   },
-
-
   {
     name: "teeth_cleaning.txt",
     content: `Q: What is the process for teeth cleaning?  
@@ -201,17 +218,12 @@ A: We recommend a check-up and cleaning every 6 months to maintain oral health a
   }
 ];
 
-
-
-
-
 async function main() {
-  console.log("Starting seeding process...");
+  console.log("🚀 Starting seeding process with Google Embeddings...");
 
   try {
     const pinecone = new Pinecone({ apiKey: PINECONE_API_KEY });
 
- 
     console.log(`Checking if index "${PINECONE_INDEX_NAME}" exists...`);
     const indexList = await pinecone.listIndexes();
     const indexExists = indexList.indexes?.some(index => index.name === PINECONE_INDEX_NAME);
@@ -220,31 +232,35 @@ async function main() {
       console.log(`Creating index "${PINECONE_INDEX_NAME}"...`);
       await pinecone.createIndex({
         name: PINECONE_INDEX_NAME,
-        dimension: 384, 
+        dimension: 768,
         metric: "cosine",
         spec: { serverless: { cloud: 'aws', region: 'us-east-1' } }
       });
       console.log(`Index created. Waiting for it to be ready...`);
-      await new Promise(resolve => setTimeout(resolve, 60000)); 
+      await new Promise(resolve => setTimeout(resolve, 60000));
     } else {
       console.log(`Index "${PINECONE_INDEX_NAME}" already exists.`);
     }
 
     const pineconeIndex = pinecone.Index(PINECONE_INDEX_NAME);
-    const embeddings = new HuggingFaceTransformersEmbeddings({ modelName: "Xenova/all-MiniLM-L6-v2" });
+    
+    const embeddings = new GoogleGenerativeAIEmbeddings({
+      model: "text-embedding-004",
+      apiKey: GOOGLE_API_KEY,
+    });
 
     const documents = documentData.map(doc => new Document({
       pageContent: doc.content,
       metadata: { source: doc.name },
     }));
 
-    console.log("Uploading documents to Pinecone...");
+    console.log("📤 Uploading documents to Pinecone...");
     await PineconeStore.fromDocuments(documents, embeddings, {
       pineconeIndex,
       namespace: "dental-info",
     });
 
-    console.log("✅ Seeding complete!");
+    console.log("✅ Seeding complete! All documents uploaded successfully.");
   } catch (error) {
     console.error("❌ Error during seeding:", error);
     process.exit(1);

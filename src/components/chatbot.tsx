@@ -8,10 +8,19 @@ import { motion, AnimatePresence } from "framer-motion";
 interface Message {
   role: "user" | "assistant";
   content?: string;
-  type?: "text" | "card" | "welcome_card";
+  type?: "text" | "card" | "welcome_card" | "booking_form";
   text?: string;
   image?: string;
   buttons?: Array<{ label: string; payload: string }>;
+  fields?: Array<{
+    id: string;
+    label: string;
+    type: string;
+    placeholder: string;
+    required: boolean;
+    pattern?: string;
+  }>;
+  submitButton?: string;
 }
 
 // --- Icons ---
@@ -25,7 +34,7 @@ const TypingIndicator = () => (
   <div className="flex w-full justify-start">
     <div className="flex max-w-[85%] gap-2 flex-row">
       <div className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border bg-white border-gray-200">
-         <img src="/logo.png" className="w-full h-full object-contain p-1" alt="Bot" />
+        <img src="/logo.png" className="w-full h-full object-contain p-1" alt="Bot" />
       </div>
       <div className="bg-white p-3.5 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 flex gap-1.5 items-center">
         <span className="w-1.5 h-1.5 bg-[#1E4D58] rounded-full animate-bounce"></span>
@@ -41,6 +50,7 @@ export function Chatbot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [bookingFormData, setBookingFormData] = useState<Record<string, string>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
 
@@ -130,6 +140,8 @@ export function Chatbot() {
         text: data.text || data.answer || "Sorry, I couldn't get a response.",
         image: data.image,
         buttons: data.buttons,
+        fields: data.fields,
+        submitButton: data.submitButton,
         content: data.text || data.answer
       };
       
@@ -161,7 +173,52 @@ export function Chatbot() {
     handleSendMessage(label, true, payload);
   };
 
-  // --- 4. Render Message Content ---
+  // --- 4. Handle Booking Form Submit (Simplified) ---
+  const handleBookingSubmit = async (e: React.FormEvent, fields: any[]) => {
+    e.preventDefault();
+    
+    const name = bookingFormData['name'];
+    const phone = bookingFormData['phone'];
+
+    if (!name || !phone) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    // Add user message showing what they submitted
+    setMessages((prev) => [
+      ...prev, 
+      { role: "user", content: `Book appointment for ${name} (${phone})` }
+    ]);
+
+    // Simulate loading
+    setIsLoading(true);
+
+    // Wait 1 second to simulate processing
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Show success message
+    setMessages((prev) => [
+      ...prev,
+      { 
+        role: "assistant", 
+        content: `✅ Success! Thank you ${name}! 
+
+We've received your booking request. Our team will call you at ${phone} shortly to confirm your appointment.
+
+Looking forward to seeing you at Old Glory Dental! 😊`
+      }
+    ]);
+
+    // Clear form and loading
+    setBookingFormData({});
+    setIsLoading(false);
+
+    // Optional: Log to console for now
+    console.log('Booking submitted:', { name, phone });
+  };
+
+  // --- 5. Render Message Content ---
   const renderContent = (msg: Message) => {
     const textContent = msg.text || msg.content;
 
@@ -169,25 +226,58 @@ export function Chatbot() {
       <div className="flex flex-col gap-3 w-full">
         {msg.image && (
           <div className="relative w-full h-32 rounded-lg overflow-hidden mb-1 border border-slate-100">
-             <img src={msg.image} alt="Visual" className="w-full h-full object-cover" />
+            <img src={msg.image} alt="Visual" className="w-full h-full object-cover" />
           </div>
         )}
         
         <div className="whitespace-pre-wrap">{textContent}</div>
 
-        {/* Buttons - Same Style as Inspiration */}
+        {/* Booking Form */}
+        {msg.type === "booking_form" && msg.fields && (
+          <form onSubmit={(e) => handleBookingSubmit(e, msg.fields!)} className="flex flex-col gap-3 mt-2">
+            {msg.fields.map((field) => (
+              <div key={field.id} className="flex flex-col gap-1">
+                <label htmlFor={field.id} className="text-xs font-medium text-gray-700">
+                  {field.label} {field.required && <span className="text-red-500">*</span>}
+                </label>
+                <input
+                  id={field.id}
+                  type={field.type}
+                  placeholder={field.placeholder}
+                  required={field.required}
+                  pattern={field.pattern}
+                  value={bookingFormData[field.id] || ''}
+                  onChange={(e) => setBookingFormData(prev => ({
+                    ...prev,
+                    [field.id]: e.target.value
+                  }))}
+                  className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E4D58] focus:border-transparent"
+                />
+              </div>
+            ))}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-[#1E4D58] hover:bg-[#163a42] text-white font-medium py-2.5 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm mt-1"
+            >
+              {msg.submitButton || "Submit"}
+            </button>
+          </form>
+        )}
+
+        {/* Regular Buttons */}
         {msg.buttons && msg.buttons.length > 0 && (
-           <div className="flex flex-wrap gap-2 mt-1">
-             {msg.buttons.map((btn, idx) => (
-               <button
-                 key={idx}
-                 onClick={() => handleOptionClick(btn.payload, btn.label)}
-                 className="text-xs border border-gray-300 text-gray-700 px-3 py-1.5 rounded-full hover:bg-gray-100 transition-colors active:scale-95"
-               >
-                 {btn.label}
-               </button>
-             ))}
-           </div>
+          <div className="flex flex-wrap gap-2 mt-1">
+            {msg.buttons.map((btn, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleOptionClick(btn.payload, btn.label)}
+                className="text-xs border border-gray-300 text-gray-700 px-3 py-1.5 rounded-full hover:bg-gray-100 transition-colors active:scale-95"
+              >
+                {btn.label}
+              </button>
+            ))}
+          </div>
         )}
       </div>
     );
@@ -208,12 +298,12 @@ export function Chatbot() {
         `}
       >
         
-        {/* Header - Old Glory Green */}
+        {/* Header */}
         <div className="bg-[#1E4D58] p-4 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="relative">
               <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white overflow-hidden backdrop-blur-sm border border-white/10">
-                 <img src="/logo.png" alt="" className="w-full h-full object-contain p-1.5" />
+                <img src="/logo.png" alt="" className="w-full h-full object-contain p-1.5" />
               </div>
               <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-[#1E4D58] rounded-full animate-pulse"></div>
             </div>
@@ -232,46 +322,46 @@ export function Chatbot() {
 
         {/* Messages Area */}
         <div className="flex-1 bg-[#FDFBF7] p-4 overflow-y-auto flex flex-col gap-6 scrollbar-hide">
-            {messages.map((msg, index) => (
-              <div 
-                key={index} 
-                className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div className={`flex max-w-[85%] gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                  
-                  {/* Avatar */}
-                  <div className={`
-                    w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border
-                    ${msg.role === 'user' ? 'bg-[#1E4D58] border-[#1E4D58] text-white' : 'bg-white border-gray-200'}
-                  `}>
-                      {msg.role === 'user' ? (
-                         <User size={14} />
-                      ) : (
-                         <img src="/logo.png" className="w-full h-full object-contain p-1" alt="Bot" />
-                      )}
-                  </div>
+          {messages.map((msg, index) => (
+            <div 
+              key={index} 
+              className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
+              <div className={`flex max-w-[85%] gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                
+                {/* Avatar */}
+                <div className={`
+                  w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border
+                  ${msg.role === 'user' ? 'bg-[#1E4D58] border-[#1E4D58] text-white' : 'bg-white border-gray-200'}
+                `}>
+                  {msg.role === 'user' ? (
+                    <User size={14} />
+                  ) : (
+                    <img src="/logo.png" className="w-full h-full object-contain p-1" alt="Bot" />
+                  )}
+                </div>
 
-                  {/* Message Bubble */}
-                  <div className="flex flex-col gap-1">
-                      <div className={`
-                          p-3.5 shadow-sm text-sm leading-relaxed
-                          ${msg.role === 'user' 
-                            ? 'bg-[#1E4D58] text-white rounded-2xl rounded-tr-none' 
-                            : 'bg-white text-gray-800 border border-gray-100 rounded-2xl rounded-tl-none'
-                          }
-                      `}>
-                        {renderContent(msg)}
-                      </div>
-                      <span className={`text-[10px] text-gray-400 ${msg.role === 'user' ? 'text-right' : 'text-left ml-1'}`}>
-                        {msg.role === 'user' ? 'You' : 'Old Glory Assistant'}
-                      </span>
+                {/* Message Bubble */}
+                <div className="flex flex-col gap-1">
+                  <div className={`
+                    p-3.5 shadow-sm text-sm leading-relaxed
+                    ${msg.role === 'user' 
+                      ? 'bg-[#1E4D58] text-white rounded-2xl rounded-tr-none' 
+                      : 'bg-white text-gray-800 border border-gray-100 rounded-2xl rounded-tl-none'
+                    }
+                  `}>
+                    {renderContent(msg)}
                   </div>
+                  <span className={`text-[10px] text-gray-400 ${msg.role === 'user' ? 'text-right' : 'text-left ml-1'}`}>
+                    {msg.role === 'user' ? 'You' : 'Old Glory Assistant'}
+                  </span>
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
 
-            {isLoading && <TypingIndicator />}
-            <div ref={messagesEndRef} />
+          {isLoading && <TypingIndicator />}
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Input Area */}
@@ -312,14 +402,14 @@ export function Chatbot() {
         </div>
       </div>
 
-      {/* --- WhatsApp Button (Floating) --- */}
+      {/* --- WhatsApp Button --- */}
       <div className={`transition-all duration-300 ${isOpen ? 'translate-y-4 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
         <a 
-          href="https://wa.me/917678245349?text=Hi%2C%20I%20want%20details%20about%20${opt.title}%20🙂"
+          href="https://wa.me/918875700500?text=Hi%2C%20I%20want%20to%20book%20an%20appointment"
           target="_blank" 
           rel="noopener noreferrer"
           aria-label="Chat on WhatsApp"
-          className="w-14 h-14 rounded-full bg-[#1d5343] hover:bg-[#153e32] text-white shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center"
+          className="w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#1da851] text-white shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center"
         >
           <WhatsAppIcon />
         </a>
@@ -331,18 +421,16 @@ export function Chatbot() {
         className="w-16 h-16 rounded-full bg-[#1E4D58] hover:bg-[#163a42] text-white shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] transition-all hover:scale-105 flex items-center justify-center z-[100] relative"
       >
         <div className={`transition-all duration-300 absolute ${isOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100'}`}>
-           <MessageSquare className="w-7 h-7" />
+          <MessageSquare className="w-7 h-7" />
         </div>
         <div className={`transition-all duration-300 absolute ${isOpen ? 'rotate-0 opacity-100' : '-rotate-90 opacity-0'}`}>
-           <X className="w-7 h-7" />
+          <X className="w-7 h-7" />
         </div>
         
-        {/* Notification Dot */}
         {!isOpen && (
-            <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 border-2 border-white rounded-full animate-pulse"></span>
+          <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 border-2 border-white rounded-full animate-pulse"></span>
         )}
       </button>
-
     </div>
   );
 }
