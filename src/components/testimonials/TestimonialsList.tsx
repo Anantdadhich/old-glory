@@ -18,9 +18,9 @@ const testimonials = [
 
 const visualTestimonials = [
   { id: 1, type: "video", title: "Smile Transformation", src: "/beforeafter.mp4", span: "row-span-2" },
-  { id: 3, type: "image", title: "Smile Makeover", src: "/test2.png", span: "row-span-1" },
+  { id: 3, type: "image", title: "Smile Makeover", src: "/test2.png", span: "row-span-2" },
   { id: 2, type: "video", title: "Orthodontics Journey", src: "/brace.mp4", span: "row-span-1" },
-  { id: 4, type: "image", title: "Whitening Results", src: "/test3.png", span: "row-span-1" },
+  { id: 4, type: "image", title: "Whitening Results", src: "/test3.png", span: "row-span-2" },
   { id: 6, type: "video", title: "Patient Story", src: "/tan.mp4", span: "row-span-2" },
   { id: 5, type: "image", title: "Happy Patient", src: "/smile.png", span: "row-span-1" },
 ];

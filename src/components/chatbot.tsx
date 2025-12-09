@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { MessageSquare, Send, X, User, ChevronLeft, ChevronRight } from "lucide-react";
+import { MessageCircle, Send, X, User,  ChevronRight } from "lucide-react";
 
 // --- Types ---
 interface Doctor {
@@ -515,7 +515,7 @@ export function Chatbot() {
         className="w-16 h-16 rounded-full bg-[#1E4D58] hover:bg-[#163a42] text-white shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] transition-all hover:scale-105 flex items-center justify-center z-[100] relative"
       >
         <div className={`transition-all duration-300 absolute ${isOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100'}`}>
-          <MessageSquare className="w-7 h-7" />
+          <MessageCircle className="w-7 h-7" />
         </div>
         <div className={`transition-all duration-300 absolute ${isOpen ? 'rotate-0 opacity-100' : '-rotate-90 opacity-0'}`}>
           <X className="w-7 h-7" />

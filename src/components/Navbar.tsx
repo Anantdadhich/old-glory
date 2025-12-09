@@ -25,7 +25,6 @@ export default function Navbar() {
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
     { name: "Book Appointment", path: "/book" },
-    { name: "Why Us", path: "/why" }, // Changed to /why to match your original structure
     { name: "Testimonials", path: "/testimonials" },
     { name: "Gallery", path: "/gallery" },
     { name: "Contact", path: "/contact" },

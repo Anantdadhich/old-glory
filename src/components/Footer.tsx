@@ -52,8 +52,8 @@ import Link from 'next/link';
         <div>
            <h4 className="font-bold text-lg mb-6 text-white">Quick Links</h4>
            <ul className="space-y-3 text-slate-300 text-sm font-medium">
-             {["Home", "About Us", "Our Services", "Why Us", "Book Appointment", "Gallery", "Contact Us"].map((item, i) => {
-                const paths = ["/", "/about", "/services", "/why", "/book", "/gallery", "/contact"];
+             {["Home", "About Us", "Our Services", "Book Appointment", "Gallery", "Contact Us"].map((item, i) => {
+                const paths = ["/", "/about", "/services", "/book", "/gallery", "/contact"];
                 return (
                   <li key={item}>
                     <Link href={paths[i]} className="hover:text-[#AEE9F5] hover:pl-2 transition-all duration-300 inline-block">
@@ -70,12 +70,12 @@ import Link from 'next/link';
            <h4 className="font-bold text-lg mb-6 text-white">Our Services</h4>
            <ul className="space-y-3 text-slate-300 text-sm font-medium">
              {[
+               "Dental Implants",
+               "Root Canal Therapy",
+               "Orthodontics",
                "General Dentistry",
                "Cosmetic Dentistry",
-               "Dental Implants",
-               "Orthodontics",
                "Pediatric Dentistry",
-               "Root Canal Therapy",
                "Emergency Care",
              ].map((service) => (
                <li key={service}>

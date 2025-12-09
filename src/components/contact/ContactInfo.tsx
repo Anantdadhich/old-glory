@@ -76,7 +76,7 @@ const ContactInfo = () => {
                                 name="name"
                                 value={formData.name}
                                 onChange={handleChange}
-                                placeholder="John Doe"
+                                placeholder="rakesh singh"
                                 required
                                 // Reduced vertical padding (py-3)
                                 className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-[#1E4D58]/20 focus:bg-white focus:ring-4 focus:ring-[#1E4D58]/5 transition-all placeholder:text-slate-400"
@@ -89,7 +89,7 @@ const ContactInfo = () => {
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                placeholder="john@example.com"
+                                placeholder="rakesh@example.com"
                                 required
                                 className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-[#1E4D58]/20 focus:bg-white focus:ring-4 focus:ring-[#1E4D58]/5 transition-all placeholder:text-slate-400"
                             />

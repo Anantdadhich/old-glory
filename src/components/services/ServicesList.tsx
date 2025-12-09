@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react"; 
 import {
   FaTooth,
@@ -19,6 +20,26 @@ import {
 
 // Data
 const services = [
+    {
+    title: "Dental Implants",
+    description: "The gold standard for replacing missing teeth. Our implants look, feel, and function just like natural teeth.",
+    icon: FaTeethOpen,
+    color: "#6366F1",
+    image: "/images/services/implemants.jpg",
+  }, {
+    title: "Root Canal (RCT)",
+    description: "Save infected teeth with our painless root canal therapy. We remove infection and seal the tooth safely.",
+    icon: FaXRay,
+    color: "#F43F5E",
+    image: "/images/services/rct.jpeg",
+  },
+    {
+    title: "Orthodontics",
+    description: "Straighten misaligned teeth with braces or aligners. We correct bites for both health and aesthetics.",
+    icon: FaTeeth,
+    color: "#10B981",
+    image: "/images/services/otho.jpeg",
+  },
   {
     title: "General Dentistry",
     description: "Comprehensive care including cleanings, fillings, and check-ups to keep your oral health in perfect condition.",
@@ -40,13 +61,7 @@ const services = [
     color: "#A855F7",
     image: "/images/services/jew.jpeg",
   },
-  {
-    title: "Dental Implants",
-    description: "The gold standard for replacing missing teeth. Our implants look, feel, and function just like natural teeth.",
-    icon: FaTeethOpen,
-    color: "#6366F1",
-    image: "/images/services/implemants.jpg",
-  },
+
   {
     title: "Dentures",
     description: "Custom-fitted complete and partial dentures to restore your smile and ability to chew comfortably.",
@@ -61,13 +76,7 @@ const services = [
     color: "#F87171",
     image: "/images/services/oral.jpg",
   },
-  {
-    title: "Orthodontics",
-    description: "Straighten misaligned teeth with braces or aligners. We correct bites for both health and aesthetics.",
-    icon: FaTeeth,
-    color: "#10B981",
-    image: "/images/services/otho.jpeg",
-  },
+
   {
     title: "Preventative Care",
     description: "Proactive treatments like sealants and fluoride to stop problems before they start. Prevention is key.",
@@ -75,13 +84,7 @@ const services = [
     color: "#0EA5E9",
     image: "/images/services/prev.jpg",
   },
-  {
-    title: "Root Canal (RCT)",
-    description: "Save infected teeth with our painless root canal therapy. We remove infection and seal the tooth safely.",
-    icon: FaXRay,
-    color: "#F43F5E",
-    image: "/images/services/rct.jpeg",
-  },
+ 
   {
     title: "Teeth Whitening",
     description: "Professional whitening treatments to remove stains and brighten your smile safely and effectively.",
@@ -103,7 +106,15 @@ const services = [
     color: "#EF4444",
     image: "/images/services/mer.jpg",
   },
+
 ];
+
+const getServiceHref = (title: string) => {
+  if (title === "Dental Implants") return "/services/dentalimplants";
+  if (title.includes("Root Canal")) return "/services/rootcanal";
+  if (title === "Orthodontics") return "/services/braces";
+  return "/services";
+};
 
 const ServicesList = () => {
   return (
@@ -148,14 +159,14 @@ const ServicesList = () => {
                 </p>
                 
                 {/* Read More Link */}
-                <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
+                <Link href={getServiceHref(service.title)} className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
                     <span className="text-xs font-bold uppercase tracking-wider text-slate-400 group-hover:text-[#1E4D58] transition-colors">
                         Learn More
                     </span>
                     <div className="w-8 h-8 rounded-full bg-[#F8F9FA] group-hover:bg-[#E0F2F7] flex items-center justify-center text-slate-400 group-hover:text-[#1E4D58] transition-all duration-300 transform group-hover:translate-x-1">
                         <ArrowRight size={14} />
                     </div>
-                </div>
+                </Link>
               </div>
               
               {/* Decorative bottom bar matching service color */}
