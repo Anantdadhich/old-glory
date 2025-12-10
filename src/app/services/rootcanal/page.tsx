@@ -18,11 +18,11 @@ import {
   Trophy
 } from "lucide-react";
 
-// --- Constants ---
+
 const WHATSAPP_NUMBER = "918875700500"; 
 const PHONE_NUMBER = "+918875700500";
 
-// --- Helper Components ---
+
 
 const Section = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
   <section className={`py-16 lg:py-24 px-4 md:px-8 ${className}`}>
@@ -52,7 +52,6 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
   );
 };
 
-// --- Sub-Sections (Defined outside main component to fix React/TS errors) ---
 
 const RootCanalHero = () => {
   return (
@@ -111,22 +110,7 @@ const RootCanalHero = () => {
           </div>
 
           {/* PAIN SCALE TRIGGERS */}
-          <div className="space-y-3">
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-                  <Activity className="w-4 h-4 text-[#1E4D58]" /> How bad is your pain?
-              </p>
-              <div className="flex flex-wrap gap-3">
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Dr.%20Tanmay,%20mild%20pain.`} className="flex-1 min-w-[100px] py-3 px-4 rounded-xl border border-yellow-200 bg-yellow-50 text-yellow-800 font-bold text-sm text-center hover:bg-yellow-100 transition-all cursor-pointer">
-                      🟡 Mild
-                  </a>
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Dr.%20Tanmay,%20throbbing%20pain.`} className="flex-1 min-w-[120px] py-3 px-4 rounded-xl border border-orange-200 bg-orange-50 text-orange-800 font-bold text-sm text-center hover:bg-orange-100 transition-all cursor-pointer">
-                      🟠 Throbbing
-                  </a>
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Dr.%20Tanmay,%20UNBEARABLE%20pain.`} className="flex-1 min-w-[130px] py-3 px-4 rounded-xl border border-red-200 bg-red-50 text-red-700 font-bold text-sm text-center hover:bg-red-100 transition-all shadow-sm cursor-pointer animate-pulse-slow">
-                      🔴 Unbearable
-                  </a>
-              </div>
-          </div>
+        
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-4 pt-2">
@@ -149,6 +133,22 @@ const RootCanalHero = () => {
                 <CheckCircle2 className="w-5 h-5" />
                 <span className="text-sm">₹500 Fee Waived*</span>
             </div>
+          </div>
+          <div className="space-y-3">
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-[#1E4D58]" /> How bad is your pain?
+              </p>
+              <div className="flex flex-wrap gap-3">
+                  <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Dr.%20Tanmay,%20mild%20pain.`} className="flex-1 min-w-[100px] py-3 px-4 rounded-xl border border-yellow-200 bg-yellow-50 text-yellow-800 font-bold text-sm text-center hover:bg-yellow-100 transition-all cursor-pointer">
+                      🟡 Mild
+                  </a>
+                  <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Dr.%20Tanmay,%20throbbing%20pain.`} className="flex-1 min-w-[120px] py-3 px-4 rounded-xl border border-orange-200 bg-orange-50 text-orange-800 font-bold text-sm text-center hover:bg-orange-100 transition-all cursor-pointer">
+                      🟠 Throbbing
+                  </a>
+                  <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Dr.%20Tanmay,%20UNBEARABLE%20pain.`} className="flex-1 min-w-[130px] py-3 px-4 rounded-xl border border-red-200 bg-red-50 text-red-700 font-bold text-sm text-center hover:bg-red-100 transition-all shadow-sm cursor-pointer animate-pulse-slow">
+                      🔴 Unbearable
+                  </a>
+              </div>
           </div>
 
           {/* Stats Divider */}
@@ -188,7 +188,7 @@ const RootCanalHero = () => {
                        <p className="text-slate-600 text-xs mt-1 italic leading-relaxed">
                          "I kept waiting for the pain to start, but the doctor said 'We are done.' Truly painless."
                        </p>
-                       <p className="text-[#1E4D58] text-[10px] font-bold mt-2 uppercase">- Anjali R., Jaipur</p>
+                       <p className="text-[#1E4D58] text-[10px] font-bold mt-2 uppercase">- Gauri Soni</p>
                     </div>
                  </div>
               </div>
@@ -323,7 +323,7 @@ const DoctorNoteSection = () => (
                   “We don’t run a franchise. We own this practice and treat most emergency patients ourself. When you walk in with pain, it becomes our responsibility. Our only goal is simple: get you out of pain within an hour - without fear, without upselling, without wasting your time.”
                </p>
                <div className="mt-6 flex flex-wrap gap-4">
-                  <a href={`tel:${PHONE_NUMBER}`} className="px-6 py-3 bg-white border border-slate-200 rounded-full text-sm font-bold text-slate-700 hover:border-[#1E4D58] transition-colors">Call Dr. Tanmay</a>
+                  <a href={`tel:${PHONE_NUMBER}`} className="px-6 py-3 bg-white border border-slate-200 rounded-full text-sm font-bold text-slate-700 hover:border-[#1E4D58] transition-colors">Call</a>
                   <a href={`https://wa.me/${WHATSAPP_NUMBER}`} className="px-6 py-3 bg-[#1E4D58] rounded-full text-sm font-bold text-white hover:bg-[#163a42] transition-colors">Message on WhatsApp</a>
                </div>
             </div>
@@ -334,25 +334,29 @@ const DoctorNoteSection = () => (
 const PricingLocationSection = () => (
     <Section className="bg-white pt-0">
          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Pricing */}
+            {/* Pricing Card */}
             <div className="bg-white border-2 border-[#E0F2F7] rounded-[32px] p-8 shadow-sm">
                <h3 className="text-2xl font-bold text-slate-900 mb-6">Simple, Fixed Pricing.</h3>
                <div className="space-y-4">
                   <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                     <span className="font-medium text-slate-600">Emergency Consultation</span>
-                     <span className="font-bold text-green-600">FREE* <span className="text-xs text-slate-400 font-normal line-through">₹500</span></span>
+                     <span className="font-medium text-slate-600">Consultation</span>
+                     <span className="font-bold text-slate-900">₹300</span>
                   </div>
                   <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                     <span className="font-medium text-slate-600">Painless RCT (Standard)</span>
-                     <span className="font-bold text-slate-900">₹4,500 – ₹6,500</span>
+                     <span className="font-medium text-slate-600">Root Canal Treatment (RCT)</span>
+                     <span className="font-bold text-slate-900">₹3,500 <span className="text-xs font-normal text-slate-400">/tooth</span></span>
                   </div>
                   <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                     <span className="font-medium text-slate-600">Rotary RCT (Premium)</span>
-                     <span className="font-bold text-slate-900">₹6,500 – ₹8,500</span>
+                     <span className="font-medium text-slate-600">Complex RCT</span>
+                     <span className="font-bold text-slate-900">₹5,500</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-4 border-b border-slate-100">
+                     <span className="font-medium text-slate-600">Re-Root Canal Treatment</span>
+                     <span className="font-bold text-slate-900">₹6,500</span>
                   </div>
                   <div className="flex justify-between items-center">
-                     <span className="font-medium text-slate-600">Zirconia Crown (15y Warranty)</span>
-                     <span className="font-bold text-slate-900">₹8,500 – ₹12,000</span>
+                     <span className="font-medium text-slate-600">Zirconia Crown</span>
+                     <span className="font-bold text-slate-900">₹9,000 – ₹12,000</span>
                   </div>
                </div>
                <div className="mt-6 text-xs text-slate-400 flex items-center gap-2">
@@ -360,7 +364,7 @@ const PricingLocationSection = () => (
                </div>
             </div>
 
-            {/* Location */}
+            {/* Location Card */}
             <div className="bg-[#1E4D58] rounded-[32px] p-8 text-white relative overflow-hidden flex flex-col justify-between">
                <div className="relative z-10">
                   <h3 className="text-2xl font-bold mb-4">Located in Mansarovar</h3>
@@ -378,7 +382,7 @@ const PricingLocationSection = () => (
                
                <div className="rounded-2xl overflow-hidden h-40 w-full relative z-10 border-2 border-white/20">
                   <iframe 
-                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3694.3835062932!2d75.76679267547786!3d26.841287863156268!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db59988c3f6fd%3A0xa3cfca109e4b6cd3!2sOld%20Glory%20Orthodontics%20%26%20Dental%20Care!5e1!3m2!1sen!2sin!4v1749836494063!5m2!1sen!2sin"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3559.664530275825!2d75.76672337543715!3d26.85061697668425!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db5bb7b973699%3A0xc3c94548d9472e3a!2s124%2C%20Vikramaditya%20Marg%2C%20Mansarovar%20Sector%201%2C%20Mansarovar%2C%20Jaipur%2C%20Rajasthan%20302020!5e0!3m2!1sen!2sin!4v1709823456789!5m2!1sen!2sin"
                     width="100%" 
                     height="100%" 
                     className="border-0 grayscale-[50%]"
@@ -404,7 +408,6 @@ const FAQSection = () => (
     </Section>
 );
 
-// --- Main Page Assembly ---
 
 export default function RootCanalPage() {
   return (

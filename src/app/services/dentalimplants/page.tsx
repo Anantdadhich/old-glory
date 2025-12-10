@@ -289,72 +289,91 @@ const ComparisonSection = () => (
     </Section>
 );
 
+
 const PricingSection = () => (
-    <Section className="bg-white">
+<section className="bg-slate-50 py-16 px-4">
+      <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Fixed, All-Inclusive Packages</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">
-                No hidden costs. Every plan includes surgery, implant body, healing abutment, X-rays, and lifetime warranty.
-            </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+            Implant & Denture Packages
+          </h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">
+            Restore your smile and chewing ability with our fixed and supported solutions.
+            Transparent pricing with no hidden costs.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Standard Plan */}
-            <div className="bg-white rounded-[32px] p-8 border-2 border-slate-100 hover:border-[#1E4D58] hover:shadow-xl hover:shadow-[#1E4D58]/10 transition-all relative group">
-                <div className="absolute top-0 right-0 bg-[#E0F2F7] text-[#1E4D58] text-xs font-bold px-4 py-2 rounded-bl-2xl rounded-tr-[30px]">
-                    VALUE CHOICE
-                </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Standard Plan</h3>
-                <div className="flex items-baseline gap-1 mb-2">
-                    <span className="text-3xl font-bold text-[#1E4D58]">₹20k - ₹25k</span>
-                </div>
-                <p className="text-sm text-slate-500 mb-6">Brands: Osstem / Hi-Tec</p>
-                <p className="text-sm font-medium text-slate-700 mb-6 bg-slate-50 p-3 rounded-lg">
-                    Best for: Back teeth & high chewing load areas.
-                </p>
-                <ul className="space-y-3 mb-8">
-                    {["Titanium Implant", "15 Year Warranty", "Standard Crown", "2 Free Follow-ups"].map((feat, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-slate-600">
-                            <CheckCircle2 className="w-4 h-4 text-[#1E4D58]" /> {feat}
-                        </li>
-                    ))}
-                </ul>
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=I%20am%20interested%20in%20Standard%20Implant.`} className="block w-full py-3 rounded-xl border-2 border-[#1E4D58] text-[#1E4D58] font-bold text-center hover:bg-[#E0F2F7] transition-all">
-                    Get Standard Quote
-                </a>
+          
+          {/* Card 1: Fixed Implant Supported Denture */}
+          <div className="bg-white rounded-[32px] p-8 border-2 border-slate-100 hover:border-[#1E4D58] hover:shadow-xl hover:shadow-[#1E4D58]/10 transition-all relative group flex flex-col">
+            <div className="absolute top-0 right-0 bg-[#E0F2F7] text-[#1E4D58] text-xs font-bold px-4 py-2 rounded-bl-2xl rounded-tr-[30px]">
+              VALUE CHOICE
             </div>
+            <h3 className="text-2xl font-bold text-slate-900 mb-2">Fixed Supported Denture</h3>
+            <div className="flex items-baseline gap-1 mb-2">
+              <span className="text-3xl font-bold text-[#1E4D58]">₹75,000</span>
+            </div>
+            <p className="text-sm text-slate-500 mb-6">Semi-fixed solution</p>
+            
+            <p className="text-sm font-medium text-slate-700 mb-6 bg-slate-50 p-3 rounded-lg">
+              Best for: Patients wanting more stability than regular dentures at an affordable price.
+            </p>
+            
+            <ul className="space-y-3 mb-8 flex-1">
+              {["Significantly better grip", "No slipping while talking", "Easier chewing", "Cost-effective solution"].map((feat, i) => (
+                <li key={i} className="flex items-center gap-2 text-sm text-slate-600">
+                  <CheckCircle2 className="w-4 h-4 text-[#1E4D58] flex-shrink-0" /> {feat}
+                </li>
+              ))}
+            </ul>
+            
+            <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=I%20am%20interested%20in%20Fixed%20Implant%20Supported%20Denture.`} className="block w-full py-3 rounded-xl border-2 border-[#1E4D58] text-[#1E4D58] font-bold text-center hover:bg-[#E0F2F7] transition-all">
+              Get Quote
+            </a>
+          </div>
 
-            {/* Premium Plan */}
-            <div className="bg-[#1E4D58] rounded-[32px] p-8 border-2 border-[#1E4D58] text-white relative shadow-xl transform md:-translate-y-4 transition-transform hover:scale-[1.01]">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-[#AEE9F5] text-[#1E4D58] text-xs font-bold px-4 py-1.5 rounded-b-xl shadow-md">
-                    MOST PATIENTS CHOOSE THIS
-                </div>
-                <h3 className="text-2xl font-bold mb-2 mt-2">Premium Swiss Plan</h3>
-                <div className="flex items-baseline gap-1 mb-2">
-                    <span className="text-3xl font-bold text-white">₹30k - ₹45k</span>
-                </div>
-                <p className="text-sm text-teal-200 mb-6">Brands: Nobel Biocare / Straumann</p>
-                <p className="text-sm font-medium text-white mb-6 bg-white/10 p-3 rounded-lg border border-white/10">
-                    Best for: Smile zone (front teeth) & immediate loading.
-                </p>
-                <ul className="space-y-3 mb-8">
-                    {["Titanium/Zirconia", "Lifetime Warranty", "Premium Crown", "Priority Support"].map((feat, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-teal-50">
-                            <CheckCircle2 className="w-4 h-4 text-[#AEE9F5]" /> {feat}
-                        </li>
-                    ))}
-                </ul>
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=I%20am%20interested%20in%20Premium%20Implant.`} className="block w-full py-3 rounded-xl bg-white text-[#1E4D58] font-bold text-center hover:bg-[#AEE9F5] transition-all shadow-lg">
-                    Get Premium Quote
-                </a>
+          {/* Card 2: Full Implant Supported Denture (Premium) */}
+          <div className="bg-[#1E4D58] rounded-[32px] p-8 border-2 border-[#1E4D58] text-white relative shadow-xl transform md:-translate-y-4 transition-transform hover:scale-[1.01] flex flex-col">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-[#AEE9F5] text-[#1E4D58] text-xs font-bold px-4 py-1.5 rounded-b-xl shadow-md whitespace-nowrap">
+              PREMIUM SOLUTION
             </div>
+            <h3 className="text-2xl font-bold mb-2 mt-2">Full Implant Denture</h3>
+            <div className="flex items-baseline gap-1 mb-2">
+              <span className="text-3xl font-bold text-white">₹2.5L - ₹5.5L</span>
+            </div>
+            <p className="text-sm text-teal-200 mb-6">Fully Fixed Option</p>
+            
+            <p className="text-sm font-medium text-white mb-6 bg-white/10 p-3 rounded-lg border border-white/10">
+              Best for: A permanent, natural-feeling replacement for all teeth.
+            </p>
+            
+            <ul className="space-y-3 mb-8 flex-1">
+              {["Fixed like natural teeth", "Full chewing power (eat nuts/apples)", "Prevents bone loss", "Premium esthetics"].map((feat, i) => (
+                <li key={i} className="flex items-center gap-2 text-sm text-teal-50">
+                  <CheckCircle2 className="w-4 h-4 text-[#AEE9F5] flex-shrink-0" /> {feat}
+                </li>
+              ))}
+            </ul>
+            
+            <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=I%20am%20interested%20in%20Full%20Implant%20Supported%20Denture.`} className="block w-full py-3 rounded-xl bg-white text-[#1E4D58] font-bold text-center hover:bg-[#AEE9F5] transition-all shadow-lg">
+              Get Premium Quote
+            </a>
+          </div>
+
         </div>
-        
+
         <div className="text-center mt-8">
-            <p className="text-slate-500 text-sm">Need Full Mouth Implants? <a href={`https://wa.me/${WHATSAPP_NUMBER}`} className="text-[#1E4D58] font-bold underline">Get a Custom Quote</a></p>
+          <p className="text-slate-500 text-sm">
+            Need a single tooth implant or bridge?{' '}
+            <a href={`https://wa.me/${WHATSAPP_NUMBER}`} className="text-[#1E4D58] font-bold underline">
+              Chat with us
+            </a>
+          </p>
         </div>
-    </Section>
-);
+      </div>
+    </section>
+  );
 
 const EligibilitySection = () => (
     <Section className="bg-[#F8F9FA]">

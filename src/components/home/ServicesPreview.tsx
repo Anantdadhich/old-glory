@@ -10,7 +10,7 @@ import Link from 'next/link';
       
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-16">
-        <h2 className="text-4xl md:text-5xl font-medium text-[#1A1A1A] mb-6 leading-tight">
+        <h2 className="text-3xl md:text-4xl font-medium text-[#1A1A1A] mb-6 leading-tight">
           Comprehensive Dental Services<br />
           For A Healthy Smile
         </h2>

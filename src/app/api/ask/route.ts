@@ -31,9 +31,9 @@ async function initializePinecone() {
         pineconeIndex,
         namespace: "dental-info",
       });
-      console.log("✅ Pinecone connected");
+      console.log(" Pinecone connected");
     } catch (error) {
-      console.error("❌ Pinecone initialization failed:", error);
+      console.error(" Pinecone initialization failed:", error);
     }
   }
   return vectorStore;
@@ -151,7 +151,7 @@ Return ONLY the category word.
     const validIntents = ["find_doctor", "services_list", "emergency", "booking_redirect", "general_chat"];
     return { intent: validIntents.includes(intent) ? intent : "general_chat" };
   } catch (e) {
-    console.error("❌ Intent Classifier Error:", e);
+    console.error(" Intent Classifier Error:", e);
     return { intent: "general_chat" };
   }
 }
@@ -160,17 +160,16 @@ async function ragRetrieverNode(state: typeof AgentState.State) {
   try {
     const store = await initializePinecone();
     if (!store) {
-      console.log("⚠️ Pinecone not available");
+      console.log(" Pinecone not available");
       return { context_from_pinecone: "" };
     }
 
     const query = state.user_message;
-    console.log(`🔍 Searching Pinecone: "${query}"`);
-
+    
     const results = await store.similaritySearch(query, 3);
     
     if (results.length === 0) {
-      console.log("⚠️ No results from Pinecone");
+     
       return { context_from_pinecone: "" };
     }
 
@@ -178,7 +177,7 @@ async function ragRetrieverNode(state: typeof AgentState.State) {
       .map(doc => doc.pageContent.trim())
       .join("\n\n---\n\n");
 
-    console.log(` Retrieved ${results.length} documents (${context.length} chars)`);
+    
     return { context_from_pinecone: context };
   } catch (error) {
     console.error("Pinecone Retrieval Error:", error);
@@ -329,7 +328,7 @@ function retrieveDoctorDetailsNode(state: typeof AgentState.State) {
   };
 }
 
-// UPDATED: Simple inline booking form
+
 function bookingRedirectNode(state: typeof AgentState.State) {
   const responseText = "Great! Let me help you book an appointment. Please provide:";
   
@@ -380,7 +379,7 @@ function serviceInfoNode(state: typeof AgentState.State) {
 }
 
 function emergencyNode(state: typeof AgentState.State) {
-  const responseText = "🚨 We are here for you.\n\nIf you are in pain, please visit us in Mansarovar immediately or call us.\n\n📍 [Get Directions](https://www.google.com/maps?q=old+glory+jaipur)\n📞 +91 88757 00500";
+  const responseText = " We are here for you.\n\nIf you are in pain, please visit us in Mansarovar immediately or call us.\n\n📍 [Get Directions](https://www.google.com/maps?q=old+glory+jaipur)\n📞 +91 88757 00500";
   
   return {
     chat_history: [

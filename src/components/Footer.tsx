@@ -41,7 +41,7 @@ import Link from 'next/link';
                 className="w-10 h-10 rounded-full border border-slate-500/50 flex items-center justify-center hover:bg-white hover:text-[#1E4D58] hover:border-white transition-all duration-300 group">
                 <Instagram size={18} />
              </a>
-             <a href="https://wa.me/917678245349?text=Hi" target="_blank" rel="noopener noreferrer" 
+             <a href="https://wa.me/918875700500?text=Hi" target="_blank" rel="noopener noreferrer" 
                 className="w-10 h-10 rounded-full border border-slate-500/50 flex items-center justify-center hover:bg-white hover:text-[#1E4D58] hover:border-white transition-all duration-300 group">
                 <FaWhatsapp size={18} />
              </a>
