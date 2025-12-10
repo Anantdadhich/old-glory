@@ -174,40 +174,43 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-      <meta
-    name="google-site-verification"
-    content="uWA2tIIvONYebH_aQvsnQTDTR0o57N1hdnjv-5IAl5Y"
+  <meta 
+    name="google-site-verification" 
+    content="uWA2tIIvONYebH_aQvsnQTDTR0o57N1hdnjv-5IAl5Y" 
   />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
 
-      
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17257652043"
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-17257652043');
-          `}
-        </Script>
-        
-      
-        <Script id="gtm" strategy="afterInteractive">
-          {`
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-TL2C7VR9');
-          `}
-        </Script>
-      </head>
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+  />
+
+  {/* gtag.js */}
+  <Script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-WZ5XWS7QNK"
+  />
+
+  <Script id="gtag-init">
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-WZ5XWS7QNK');
+    `}
+  </Script>
+
+  {/* Google Tag Manager */}
+  <Script id="gtm-head">
+    {`
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-TNPG7VSJ');
+    `}
+  </Script>
+</head>
+
 
       <body className={`${lexend.className} antialiased selection:bg-[#1E4D58] selection:text-white`}>
        
