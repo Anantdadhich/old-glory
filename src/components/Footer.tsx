@@ -123,7 +123,7 @@ import Link from 'next/link';
                    <Clock size={16} className="text-[#AEE9F5]" />
                 </div>
                <span>
-                 Mon-Sat: 10:30 AM - 8:00 PM<br />
+                10:30 am–2 pm, 5:30–8 pm<br />
                  Sun: Closed
                </span>
              </li>

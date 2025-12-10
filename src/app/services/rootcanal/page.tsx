@@ -30,29 +30,7 @@ const Section = ({ children, className = "" }: { children: React.ReactNode; clas
   </section>
 );
 
-const StickyMobileFooter = () => (
-  <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-50 md:hidden p-3 flex gap-3 items-center safe-area-bottom">
-    <a 
-      href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Dr.%20Tanmay,%20I'm%20in%20pain%20and%20need%20an%20emergency%20appointment.`}
-      className="flex-1 flex flex-col justify-center items-start pl-2"
-    >
-      <div className="flex items-center gap-1.5">
-        <span className="relative flex h-2.5 w-2.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-        </span>
-        <span className="font-bold text-slate-800 text-sm">Emergency: OPEN</span>
-      </div>
-      <span className="text-[10px] text-slate-500">Avg Response: 40s</span>
-    </a>
-    <a 
-      href={`tel:${PHONE_NUMBER}`}
-      className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-full font-bold text-sm flex items-center justify-center gap-2 animate-pulse-slow shadow-lg"
-    >
-      <Phone className="w-4 h-4" /> CALL DOCTOR
-    </a>
-  </div>
-);
+
 
 const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -115,7 +93,7 @@ const RootCanalHero = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-[#1E4D58]/10 rounded-full w-fit shadow-sm animate-fade-in-up">
              <div className="flex items-center gap-1 pl-1">
                  <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-                 <span className="text-xs font-bold text-slate-800">4.9/5 (87 Reviews) • Dr. Tanmay & Dr. Ridam</span>
+                 <span className="text-xs font-bold text-slate-800">4.9 Rated • Dr. Tanmay & Dr. Ridam</span>
              </div>
           </div>
 
@@ -337,17 +315,12 @@ const DoctorNoteSection = () => (
     <Section className="bg-white">
          <div className="bg-[#F8F9FA] rounded-[40px] p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 border border-slate-100">
             <div className="shrink-0 relative">
-               <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white shadow-lg">
-                  <img src="/tan.jpeg" alt="Dr. Tanmay" className="w-full h-full object-cover" />
-               </div>
-               <div className="absolute -bottom-3 -right-3 bg-[#1E4D58] text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
-                  Chief Dentist
-               </div>
+           
             </div>
             <div>
-               <h3 className="text-2xl font-bold text-slate-900 mb-4">A Personal Note from Dr. Tanmay</h3>
+               <h3 className="text-2xl font-bold text-slate-900 mb-4">A Personal Note from Doctors</h3>
                <p className="text-slate-600 italic text-lg leading-relaxed mb-6">
-                  “I don’t run a franchise. I own this practice and treat most emergency patients myself. When you walk in with pain, it becomes my responsibility. My only goal is simple: get you out of pain within an hour — without fear, without upselling, without wasting your time.”
+                  “We don’t run a franchise. We own this practice and treat most emergency patients ourself. When you walk in with pain, it becomes our responsibility. Our only goal is simple: get you out of pain within an hour - without fear, without upselling, without wasting your time.”
                </p>
                <div className="mt-6 flex flex-wrap gap-4">
                   <a href={`tel:${PHONE_NUMBER}`} className="px-6 py-3 bg-white border border-slate-200 rounded-full text-sm font-bold text-slate-700 hover:border-[#1E4D58] transition-colors">Call Dr. Tanmay</a>
@@ -436,7 +409,7 @@ const FAQSection = () => (
 export default function RootCanalPage() {
   return (
     <main className="bg-[#F8F9FA] min-h-screen pb-20 md:pb-0 font-sans">
-        <StickyMobileFooter />
+       
         <RootCanalHero />
         <FearKillerSection />
         <BeforeAfterSection />

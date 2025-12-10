@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { 
   Phone, 
   MessageCircle, 
-  MapPin, 
   Clock, 
   Star, 
   ShieldCheck, 
@@ -13,16 +12,15 @@ import {
   XCircle,
   Car,
   ArrowRight,
-  ChevronDown,
   CalendarCheck,
   UserCheck
 } from "lucide-react";
 
-// --- Constants ---
+
 const WHATSAPP_NUMBER = "918875700500"; 
 const PHONE_NUMBER = "+918875700500";
 
-// --- Helper Components ---
+
 
 const Section = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
   <section className={`py-16 lg:py-24 px-4 md:px-8 ${className}`}>
@@ -30,22 +28,7 @@ const Section = ({ children, className = "" }: { children: React.ReactNode; clas
   </section>
 );
 
-const StickyMobileFooter = () => (
-  <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-50 md:hidden p-3 flex gap-3 items-center safe-area-bottom">
-    <div className="flex-1 flex flex-col justify-center items-start pl-2">
-      <span className="font-bold text-slate-900 text-sm">🦷 Missing a Tooth?</span>
-      <span className="text-[10px] text-green-600 font-medium">● Senior Doctor replies personally</span>
-    </div>
-    <a 
-      href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Dr.%20Tanmay,%20I%20need%20a%20quote%20for%20Dental%20Implants.`}
-      className="bg-[#1E4D58] hover:bg-[#163a42] text-white py-3 px-6 rounded-full font-bold text-sm flex items-center justify-center gap-2 shadow-lg"
-    >
-      <MessageCircle className="w-4 h-4" /> GET QUOTE
-    </a>
-  </div>
-);
 
-// --- Sub-Sections ---
 
 const ImplantHero = () => {
   return (
@@ -501,12 +484,12 @@ const ScarcitySection = () => (
     </Section>
 );
 
-// --- Main Page Assembly ---
+
 
 export default function DentalImplantsPage() {
   return (
     <main className="bg-[#F8F9FA] min-h-screen pb-20 md:pb-0 font-sans">
-        <StickyMobileFooter />
+       
         <ImplantHero />
         <OwnerDoctorAdvantage />
         <VIPServiceSection />
@@ -518,7 +501,7 @@ export default function DentalImplantsPage() {
         <JourneySection />
         <ScarcitySection />
         
-        {/* --- FINAL CTA --- */}
+       
         <section className="py-20 px-4 text-center bg-[#1E4D58] text-white">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Your New Smile Is Just 2 Visits Away</h2>
             <p className="text-teal-100 mb-8 max-w-xl mx-auto">Send your X-ray for a free eligibility check or book your consultation today.</p>
