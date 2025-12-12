@@ -1,22 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { StateGraph, END, Annotation } from "@langchain/langgraph";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
+import { ChatOpenAI } from "@langchain/openai";
+import { OpenAIEmbeddings } from "@langchain/openai";
 import { PineconeStore } from "@langchain/pinecone";
 import { Pinecone as PineconeClient } from "@pinecone-database/pinecone";
 
 
-
-const llm = new ChatGoogleGenerativeAI({
-  model: "gemini-2.0-flash",
-  temperature: 0.4,
-  apiKey: process.env.GOOGLE_API_KEY,
+const llm = new ChatOpenAI({
+  model: "gpt-5-nano",
+  temperature: 1,
+  openAIApiKey: process.env.OPENAI_API_KEY,
 });
 
-const embeddings = new GoogleGenerativeAIEmbeddings({
-  model: "text-embedding-004",
-  apiKey: process.env.GOOGLE_API_KEY,
+
+const embeddings = new OpenAIEmbeddings({
+  model: "text-embedding-3-small",
+  openAIApiKey: process.env.OPENAI_API_KEY,
 });
+
 
 let vectorStore: PineconeStore | null = null;
 
@@ -31,15 +32,13 @@ async function initializePinecone() {
         pineconeIndex,
         namespace: "dental-info",
       });
-      console.log(" Pinecone connected");
+      
     } catch (error) {
-      console.error(" Pinecone initialization failed:", error);
+      console.error("Pinecone initialization failed:", error);
     }
   }
   return vectorStore;
 }
-
-
 
 const DOCTORS_DB = {
   dr_ridam: {
@@ -58,8 +57,6 @@ const DOCTORS_DB = {
   },
 };
 
-
-
 const AgentState = Annotation.Root({
   user_message: Annotation<string>(),
   chat_history: Annotation<Array<{ role: string; content: string }>>({
@@ -74,8 +71,6 @@ const AgentState = Annotation.Root({
   booking_step: Annotation<string>(),
   final_response: Annotation<any>(),
 });
-
-
 
 function extractUserName(msg: string, history: Array<{ role: string; content: string }>): string {
   const patterns = [
@@ -109,8 +104,6 @@ function extractUserName(msg: string, history: Array<{ role: string; content: st
 
   return "";
 }
-
-
 
 async function intentClassifierNode(state: typeof AgentState.State) {
   const msg = state.user_message.trim();
@@ -165,11 +158,9 @@ async function ragRetrieverNode(state: typeof AgentState.State) {
     }
 
     const query = state.user_message;
-    
     const results = await store.similaritySearch(query, 3);
     
     if (results.length === 0) {
-     
       return { context_from_pinecone: "" };
     }
 
@@ -177,10 +168,9 @@ async function ragRetrieverNode(state: typeof AgentState.State) {
       .map(doc => doc.pageContent.trim())
       .join("\n\n---\n\n");
 
-    
     return { context_from_pinecone: context };
   } catch (error) {
-    console.error("Pinecone Retrieval Error:", error);
+    console.error(" Pinecone Retrieval Error:", error);
     return { context_from_pinecone: "" };
   }
 }
@@ -198,41 +188,64 @@ async function generalChatNode(state: typeof AgentState.State) {
     .map(m => `${m.role === "user" ? "User" : "Assistant"}: ${m.content}`)
     .join("\n");
 
-  const prompt = `
+ const prompt = `
 You are the friendly AI receptionist for Old Glory Dental Clinic in Jaipur.
 
-Your Personality:
-- Warm, empathetic, conversational, professional
-- Talk like a real person, not a robot
-- Remember details from the conversation
-- Use natural language, be helpful
+Role:
+- Be the first point of contact for patients.
+- Answer questions, clarify doubts, and gently guide users toward booking a visit when appropriate.
 
-${userName ? `Important: User's name is ${userName}. Use it naturally!\n` : ""}
+Personality:
+- Warm, empathetic, reassuring, and professional.
+- Talk like a real human, not a robot.
+- Use simple, clear language and avoid medical jargon unless the user seems comfortable with it.
 
-${pineconeContext ? `Knowledge Base (use this to answer questions):\n${pineconeContext}\n` : ""}
+Memory & Personalization:
+- Remember details from the conversation (name, concerns, preferences).
+- If the user has shared their name before, reuse it naturally.
+- Never invent personal details that the user has not given.
 
-Basic Clinic Info:
-- Doctors: Dr. Ridam Jain (Orthodontist/Cosmetic, 15+ yrs) & Dr. Tanmay Sharma (Implantologist, 20+ yrs)
-- Location: 124/505, Vikramaditya Marg, Mansarovar, Jaipur
-- Hours: Mon–Sat 10:30 AM–2 PM & 6–8 PM (Closed Sundays)
+${userName ? `Important: The user's name is ${userName}. Use it naturally in your reply.\n` : ""}
+
+Knowledge Base:
+${pineconeContext ? `Use the following clinic knowledge base to answer accurately. If relevant, quote or paraphrase it in a natural way:\n${pineconeContext}\n` : `If clinic-specific information is needed and not provided, answer generally and suggest contacting the clinic for exact details.\n`}
+
+Basic Clinic Info (always trust this if there is a conflict):
+- Doctors:
+  - Dr. Ridam Jain – MDS Orthodontist & Cosmetic Dentist, 15+ years experience.
+  - Dr. Tanmay Sharma – MDS Orthodontist & Implantologist, 20+ years experience.
+- Location: 124/505, Vikramaditya Marg, Mansarovar, Jaipur.
+- Hours: Monday–Saturday, 10:30 AM–2 PM and 6–8 PM (Closed Sundays).
 - Contact: +91 88757 00500, drtanmaysharma@gmail.com, www.oldglory.in
 
-Conversation History:
+Conversation so far:
 ${formattedHistory}
 
-User's message: "${msg}"
+Current user message:
+"${msg}"
 
 Rules:
-1. REMEMBER previous messages - if user said their name, use it!
-2. If they ask "what's my name?", check conversation history
-3. Answer questions using Knowledge Base when available
-4. Match user's language (Hindi/Hinglish or English)
-5. Keep responses 2-3 sentences, conversational
-6. NO bold formatting (**text**)
-7. End with gentle CTA like "Shall we book a visit?"
-8. For location: "We are located at: 124/505, Vikramaditya Marg, Mansarovar, Jaipur. 👉 [View on Maps](https://www.google.com/maps?q=old+glory+jaipur)"
+1. Always stay kind, calm, and reassuring, especially if the user is in pain or anxious.
+2. Use the knowledge base and clinic info for all factual answers about services, hours, pricing style, and policies.
+3. If you don’t know something (like exact prices), say so honestly and suggest calling or WhatsApping the clinic.
+4. Match the user’s language and tone:
+   - If they use Hindi or Hinglish, reply in friendly Hinglish.
+   -If they use Hindi , reply in friendly Hindi.
+   - If they use English, reply in natural Indian English.
+5. Keep responses short and focused: usually 2–3 sentences. Only go longer if the user clearly asks for detail.
+6. Do NOT use bold formatting (no **text**), markdown, or bullet points in your actual reply. Just plain text.
+7. End most replies with a gentle call-to-action like:
+   - "Shall we book a visit?"
+   - "Would you like to fix an appointment for this?"
+   - "If you want, I can help you plan a visit."
+8. For location queries, include this exact sentence in your own words:
+   We are located at: 124/505, Vikramaditya Marg, Mansarovar, Jaipur. You can view us on Maps here: https://www.google.com/maps?q=old+glory+jaipur
+9. Never give emergency medical advice beyond suggesting urgent in-person visit or calling the clinic.
 
-Respond naturally:
+Your task:
+- Think step by step about what the user really wants.
+- Use the conversation history and knowledge base.
+- Then write ONE helpful, natural reply message to the user (no labels, no prefixes, just the reply text).
 `;
 
   const response = await llm.invoke(prompt);
@@ -281,7 +294,7 @@ function retrieveDoctorProfileNode(state: typeof AgentState.State) {
       { role: "assistant", content: responseText }
     ],
     final_response: {
-      type: "doctor_cards", // New type for multiple doctors
+      type: "doctor_cards",
       text: responseText,
       doctors: [
         {
@@ -306,7 +319,6 @@ function retrieveDoctorProfileNode(state: typeof AgentState.State) {
   };
 }
 
-
 function retrieveDoctorDetailsNode(state: typeof AgentState.State) {
   const docId = state.selected_doctor_id || "dr_ridam";
   // @ts-ignore
@@ -327,7 +339,6 @@ function retrieveDoctorDetailsNode(state: typeof AgentState.State) {
     },
   };
 }
-
 
 function bookingRedirectNode(state: typeof AgentState.State) {
   const responseText = "Great! Let me help you book an appointment. Please provide:";
@@ -379,7 +390,7 @@ function serviceInfoNode(state: typeof AgentState.State) {
 }
 
 function emergencyNode(state: typeof AgentState.State) {
-  const responseText = " We are here for you.\n\nIf you are in pain, please visit us in Mansarovar immediately or call us.\n\n📍 [Get Directions](https://www.google.com/maps?q=old+glory+jaipur)\n📞 +91 88757 00500";
+  const responseText = "🚨 We are here for you.\n\nIf you are in pain, please visit us in Mansarovar immediately or call us.\n\n📍 [Get Directions](https://www.google.com/maps?q=old+glory+jaipur)\n📞 +91 88757 00500";
   
   return {
     chat_history: [
@@ -396,8 +407,6 @@ function emergencyNode(state: typeof AgentState.State) {
     },
   };
 }
-
-
 
 const workflow = new StateGraph(AgentState)
   .addNode("classifier", intentClassifierNode)
@@ -433,8 +442,6 @@ workflow.addEdge("retriever", "general");
 
 const appGraph = workflow.compile();
 
-
-
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -450,8 +457,6 @@ export async function POST(req: NextRequest) {
       }));
     }
 
-    
-
     const result = await appGraph.invoke({
       user_message: String(userMessage),
       chat_history: chatHistory,
@@ -460,7 +465,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(result.final_response);
   } catch (error) {
-    console.error("❌ Chat Error:", error);
+    console.error(" Chat Error:", error);
     return NextResponse.json(
       {
         type: "text",

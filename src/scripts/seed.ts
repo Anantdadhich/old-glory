@@ -1,7 +1,7 @@
 import { Document } from "@langchain/core/documents";
 import { PineconeStore } from "@langchain/pinecone";
 import { Pinecone } from "@pinecone-database/pinecone";
-import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
+import { OpenAIEmbeddings } from "@langchain/openai"; // Changed from Google
 import * as dotenv from "dotenv";
 import * as path from "path";
 import * as fs from "fs";
@@ -42,10 +42,9 @@ const getEnv = (name: string): string => {
   return value;
 };
 
-
 const PINECONE_API_KEY = getEnv("PINECONE_API_KEY");
 const PINECONE_INDEX_NAME = getEnv("PINECONE_INDEX_NAME");
-const GOOGLE_API_KEY = getEnv("GOOGLE_API_KEY");
+const OPENAI_API_KEY = getEnv("OPENAI_API_KEY"); // Changed from GOOGLE_API_KEY
 
 const documentData = [
   {
@@ -219,7 +218,7 @@ A: We recommend a check-up and cleaning every 6 months to maintain oral health a
 ];
 
 async function main() {
-  console.log("🚀 Starting seeding process with Google Embeddings...");
+  console.log("🚀 Starting seeding process with OpenAI Embeddings...");
 
   try {
     const pinecone = new Pinecone({ apiKey: PINECONE_API_KEY });
@@ -230,23 +229,27 @@ async function main() {
 
     if (!indexExists) {
       console.log(`Creating index "${PINECONE_INDEX_NAME}"...`);
+     
       await pinecone.createIndex({
         name: PINECONE_INDEX_NAME,
-        dimension: 768,
+        dimension: 1536, 
         metric: "cosine",
         spec: { serverless: { cloud: 'aws', region: 'us-east-1' } }
       });
       console.log(`Index created. Waiting for it to be ready...`);
       await new Promise(resolve => setTimeout(resolve, 60000));
     } else {
-      console.log(`Index "${PINECONE_INDEX_NAME}" already exists.`);
+      console.log(`⚠️ Warning: Index "${PINECONE_INDEX_NAME}" already exists.`);
+      console.log(`⚠️ If it was created with 768 dimensions (Google), you need to delete it first.`);
+      console.log(`⚠️ Run: pinecone delete index ${PINECONE_INDEX_NAME}`);
     }
 
     const pineconeIndex = pinecone.Index(PINECONE_INDEX_NAME);
     
-    const embeddings = new GoogleGenerativeAIEmbeddings({
-      model: "text-embedding-004",
-      apiKey: GOOGLE_API_KEY,
+   
+    const embeddings = new OpenAIEmbeddings({
+      model: "text-embedding-3-small", // 1536 dimensions, $0.02 per 1M tokens
+      openAIApiKey: OPENAI_API_KEY,
     });
 
     const documents = documentData.map(doc => new Document({
