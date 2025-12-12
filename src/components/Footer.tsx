@@ -106,8 +106,9 @@ import Link from 'next/link';
                   <Phone size={16} className="text-[#AEE9F5]" />
                </div>
                <div className="flex flex-col">
+                 <span>(+91) 8875700500 </span>
                  <span>(+91) 92162 13329</span>
-                 <span>(+91) 98874 93549</span>
+             
                </div>
              </li>
              <li className="flex items-center gap-3">

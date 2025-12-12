@@ -139,13 +139,13 @@ const RootCanalHero = () => {
                   <Activity className="w-4 h-4 text-[#1E4D58]" /> How bad is your pain?
               </p>
               <div className="flex flex-wrap gap-3">
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Dr.%20Tanmay,%20mild%20pain.`} className="flex-1 min-w-[100px] py-3 px-4 rounded-xl border border-yellow-200 bg-yellow-50 text-yellow-800 font-bold text-sm text-center hover:bg-yellow-100 transition-all cursor-pointer">
+                  <a href={`tel:${PHONE_NUMBER}`} className="flex-1 min-w-[100px] py-3 px-4 rounded-xl border border-yellow-200 bg-yellow-50 text-yellow-800 font-bold text-sm text-center hover:bg-yellow-100 transition-all cursor-pointer">
                       🟡 Mild
                   </a>
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Dr.%20Tanmay,%20throbbing%20pain.`} className="flex-1 min-w-[120px] py-3 px-4 rounded-xl border border-orange-200 bg-orange-50 text-orange-800 font-bold text-sm text-center hover:bg-orange-100 transition-all cursor-pointer">
+                  <a href={`tel:${PHONE_NUMBER}`} className="flex-1 min-w-[120px] py-3 px-4 rounded-xl border border-orange-200 bg-orange-50 text-orange-800 font-bold text-sm text-center hover:bg-orange-100 transition-all cursor-pointer">
                       🟠 Throbbing
                   </a>
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Dr.%20Tanmay,%20UNBEARABLE%20pain.`} className="flex-1 min-w-[130px] py-3 px-4 rounded-xl border border-red-200 bg-red-50 text-red-700 font-bold text-sm text-center hover:bg-red-100 transition-all shadow-sm cursor-pointer animate-pulse-slow">
+                  <a href={`tel:${PHONE_NUMBER}`} className="flex-1 min-w-[130px] py-3 px-4 rounded-xl border border-red-200 bg-red-50 text-red-700 font-bold text-sm text-center hover:bg-red-100 transition-all shadow-sm cursor-pointer animate-pulse-slow">
                       🔴 Unbearable
                   </a>
               </div>
@@ -312,22 +312,56 @@ const ComparisonSection = () => (
 );
 
 const DoctorNoteSection = () => (
-    <Section className="bg-white">
-         <div className="bg-[#F8F9FA] rounded-[40px] p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 border border-slate-100">
-            <div className="shrink-0 relative">
+  <Section className="bg-white">
+      <div className="bg-[#F8F9FA] rounded-[40px] p-8 md:p-12 flex flex-col md:flex-row items-center gap-10 border border-slate-100 shadow-sm">
+        
+       
+        <div className="shrink-0 relative flex gap-4 justify-center">
            
+            
+            <div className="relative group">
+                <div className="w-32 h-40 md:w-40 md:h-48 rounded-2xl overflow-hidden border-4 border-white shadow-md transform -rotate-3 group-hover:rotate-0 transition-transform duration-300 bg-slate-200">
+                    <img 
+                        src="/tan.jpeg" 
+                        alt="Doctor 1" 
+                        className="w-full h-full object-cover"
+                    />
+                </div>
+              
+                <div className="text-center mt-2">
+                    <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Dr. Tanmay Sharma</p>
+                </div>
             </div>
-            <div>
-               <h3 className="text-2xl font-bold text-slate-900 mb-4">A Personal Note from Doctors</h3>
-               <p className="text-slate-600 italic text-lg leading-relaxed mb-6">
-                  “We don’t run a franchise. We own this practice and treat most emergency patients ourself. When you walk in with pain, it becomes our responsibility. Our only goal is simple: get you out of pain within an hour - without fear, without upselling, without wasting your time.”
-               </p>
-               <div className="mt-6 flex flex-wrap gap-4">
-                  <a href={`tel:${PHONE_NUMBER}`} className="px-6 py-3 bg-white border border-slate-200 rounded-full text-sm font-bold text-slate-700 hover:border-[#1E4D58] transition-colors">Call</a>
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER}`} className="px-6 py-3 bg-[#1E4D58] rounded-full text-sm font-bold text-white hover:bg-[#163a42] transition-colors">Message on WhatsApp</a>
-               </div>
+
+          
+            <div className="relative group mt-8 md:mt-8"> 
+                <div className="w-32 h-40 md:w-40 md:h-48 rounded-2xl overflow-hidden border-4 border-white shadow-md transform rotate-3 group-hover:rotate-0 transition-transform duration-300 bg-slate-200">
+                    <img 
+                        src="/ridam.jpeg" 
+                        alt="Doctor 2" 
+                        className="w-full h-full object-cover"
+                    />
+                </div>
+               
+                <div className="text-center mt-2">
+                    <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Dr. Ridam Jain</p>
+                </div>
             </div>
-         </div>
+            
+        </div>
+
+       
+        <div className="flex-1">
+           <h3 className="text-2xl font-bold text-slate-900 mb-4">A Personal Note from the Doctors</h3>
+           <p className="text-slate-600 italic text-lg leading-relaxed mb-6">
+              “We don’t run a franchise. We own this practice and treat most emergency patients ourselves. When you walk in with pain, it becomes our responsibility. Our only goal is simple: get you out of pain within an hour — without fear, without upselling, without wasting your time.”
+           </p>
+           <div className="mt-6 flex flex-wrap gap-4">
+              <a href={`tel:${PHONE_NUMBER}`} className="px-6 py-3 bg-white border border-slate-200 rounded-full text-sm font-bold text-slate-700 hover:border-[#1E4D58] hover:text-[#1E4D58] transition-colors shadow-sm">Call Now</a>
+              <a href={`https://wa.me/${WHATSAPP_NUMBER}`} className="px-6 py-3 bg-[#1E4D58] rounded-full text-sm font-bold text-white hover:bg-[#163a42] transition-colors shadow-md shadow-[#1E4D58]/20">Message on WhatsApp</a>
+           </div>
+        </div>
+      </div>
     </Section>
 );
 

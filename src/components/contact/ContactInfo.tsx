@@ -170,8 +170,8 @@ const ContactInfo = () => {
                             </div>
                             <div>
                                 <p className="text-teal-200 text-xs font-bold uppercase tracking-wider mb-1">Direct Contact</p>
-                                <a href="tel:+919216213329" className="block text-white text-lg font-bold hover:text-[#AEE9F5] transition-colors">
-                                    +91 92162 13329
+                                <a href="tel:+918875700500" className="block text-white text-lg font-bold hover:text-[#AEE9F5] transition-colors">
+                                    +91 8875700500
                                 </a>
                                 <a href="mailto:drtanmaysharma@gmail.com" className="text-teal-100 text-sm hover:text-white transition-colors">
                                     drtanmaysharma@gmail.com
