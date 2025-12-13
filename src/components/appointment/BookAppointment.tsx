@@ -14,9 +14,52 @@ const BookAppointment = () => {
     message: ''
   });
   
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you! We will confirm your appointment shortly.");
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      console.log("📤 Sending booking:", formData);
+
+      const response = await fetch('/api/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      console.log("📥 Response status:", response.status);
+      const result = await response.json();
+      console.log("📥 Response data:", result);
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          date: '',
+          time: '',
+          service: '',
+          message: ''
+        });
+        alert("Thank you! We will confirm your appointment shortly.");
+      } else {
+        setSubmitStatus('error');
+        alert("Something went wrong. Please call us at +91 88757 00500");
+      }
+    } catch (error) {
+      console.error("❌ Booking error:", error);
+      setSubmitStatus('error');
+      alert("Connection error. Please try again or call us at +91 88757 00500");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -133,6 +176,7 @@ const BookAppointment = () => {
                         name="date"
                         value={formData.date}
                         onChange={handleChange}
+                        min={new Date().toISOString().split('T')[0]}
                         className="w-full pl-10 pr-3 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-600 focus:outline-none focus:border-[#1E4D58]/30 focus:bg-white focus:ring-2 focus:ring-[#1E4D58]/5 transition-all cursor-pointer"
                         required
                         />
@@ -165,10 +209,11 @@ const BookAppointment = () => {
 
               <button
                 type="submit"
-                className="w-full bg-[#1E4D58] text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-[#1E4D58]/20 hover:bg-[#163a42] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 group text-sm"
+                disabled={isSubmitting}
+                className="w-full bg-[#1E4D58] text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-[#1E4D58]/20 hover:bg-[#163a42] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 group text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Confirm Appointment
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                {isSubmitting ? 'Submitting...' : 'Confirm Appointment'}
+                {!isSubmitting && <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
               </button>
             </form>
           </div>

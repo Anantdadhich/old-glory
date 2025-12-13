@@ -279,7 +279,7 @@ export function Chatbot() {
     handleSendMessage(label, true, payload);
   };
 
-  const handleBookingSubmit = async (e: React.FormEvent, fields: any[]) => {
+ const handleBookingSubmit = async (e: React.FormEvent, fields: any[]) => {
     e.preventDefault();
     
     const name = bookingFormData['name'];
@@ -290,26 +290,20 @@ export function Chatbot() {
       return;
     }
 
+    
+    const payload = `ACTION_SUBMIT_BOOKING_NAME_${name}_PHONE_${phone}`;
+    
     setMessages((prev) => [
       ...prev, 
-      { role: "user", content: `Book appointment for ${name} (${phone})` }
-    ]);
-
-    setIsLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    setMessages((prev) => [
-      ...prev,
-      { 
-        role: "assistant", 
-        content: `✅ Success! Thank you ${name}!\n\nWe've received your booking request. Our team will call you at ${phone} shortly to confirm your appointment.\n\nLooking forward to seeing you at Old Glory Dental! 😊`
-      }
+      { role: "user", content: `Confirmed details: ${name}, ${phone}` }
     ]);
 
     setBookingFormData({});
-    setIsLoading(false);
-    console.log('Booking submitted:', { name, phone });
+    
+    // Send to backend which will save to Google Sheets
+    handleSendMessage(`Confirmed details: ${name}, ${phone}`, false, payload);
   };
+
 
   const renderContent = (msg: Message) => {
     const textContent = msg.text || msg.content;

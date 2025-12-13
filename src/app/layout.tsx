@@ -202,6 +202,21 @@ export default function RootLayout({
     async
     src="https://www.googletagmanager.com/gtag/js?id=G-WZ5XWS7QNK"
   />
+   <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-WZ5XWS7QNK"
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+      >
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-WZ5XWS7QNK');
+        `}
+      </Script>
 
   <Script id="gtag-init">
     {`

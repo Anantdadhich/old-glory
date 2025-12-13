@@ -5,19 +5,16 @@ import { OpenAIEmbeddings } from "@langchain/openai";
 import { PineconeStore } from "@langchain/pinecone";
 import { Pinecone as PineconeClient } from "@pinecone-database/pinecone";
 
-
 const llm = new ChatOpenAI({
   model: "gpt-5-nano",
   temperature: 1,
   openAIApiKey: process.env.OPENAI_API_KEY,
 });
 
-
 const embeddings = new OpenAIEmbeddings({
   model: "text-embedding-3-small",
   openAIApiKey: process.env.OPENAI_API_KEY,
 });
-
 
 let vectorStore: PineconeStore | null = null;
 
@@ -32,7 +29,6 @@ async function initializePinecone() {
         pineconeIndex,
         namespace: "dental-info",
       });
-      
     } catch (error) {
       console.error("Pinecone initialization failed:", error);
     }
@@ -109,7 +105,8 @@ async function intentClassifierNode(state: typeof AgentState.State) {
   const msg = state.user_message.trim();
 
   if (msg === "INIT_CHAT") return { intent: "welcome" };
-  if (msg.includes("ACTION_NAVIGATE_BOOKING")) return { intent: "booking_redirect" };
+  if (msg.includes("ACTION_NAVIGATE_BOOKING")) return { intent: "booking_form_request" };
+  if (msg.includes("ACTION_SUBMIT_BOOKING")) return { intent: "booking_submission" };
   if (msg.includes("ACTION_DETAILS")) {
     const docId = msg.split("_").slice(2).join("_");
     return { intent: "doctor_details", selected_doctor_id: docId };
@@ -132,7 +129,7 @@ Classify into ONE category:
 - 'find_doctor': Wants to know about doctors/dentists
 - 'services_list': Explicitly asks for services list/menu
 - 'emergency': Mentions pain, urgent, broken tooth, swelling, bleeding
-- 'booking_redirect': Wants to book/schedule appointment
+- 'booking_form_request': Wants to book/schedule appointment
 - 'general_chat': Everything else (questions, greetings, casual talk)
 
 Return ONLY the category word.
@@ -141,10 +138,10 @@ Return ONLY the category word.
   try {
     const response = await llm.invoke(classifierPrompt);
     const intent = response.content.toString().trim().toLowerCase();
-    const validIntents = ["find_doctor", "services_list", "emergency", "booking_redirect", "general_chat"];
+    const validIntents = ["find_doctor", "services_list", "emergency", "booking_form_request", "general_chat"];
     return { intent: validIntents.includes(intent) ? intent : "general_chat" };
   } catch (e) {
-    console.error(" Intent Classifier Error:", e);
+    console.error("⚠️ Intent Classifier Error:", e);
     return { intent: "general_chat" };
   }
 }
@@ -153,7 +150,7 @@ async function ragRetrieverNode(state: typeof AgentState.State) {
   try {
     const store = await initializePinecone();
     if (!store) {
-      console.log(" Pinecone not available");
+      console.log("⚠️ Pinecone not available");
       return { context_from_pinecone: "" };
     }
 
@@ -170,7 +167,7 @@ async function ragRetrieverNode(state: typeof AgentState.State) {
 
     return { context_from_pinecone: context };
   } catch (error) {
-    console.error(" Pinecone Retrieval Error:", error);
+    console.error("⚠️ Pinecone Retrieval Error:", error);
     return { context_from_pinecone: "" };
   }
 }
@@ -188,7 +185,7 @@ async function generalChatNode(state: typeof AgentState.State) {
     .map(m => `${m.role === "user" ? "User" : "Assistant"}: ${m.content}`)
     .join("\n");
 
- const prompt = `
+  const prompt = `
 You are the friendly AI receptionist for Old Glory Dental Clinic in Jaipur.
 
 Role:
@@ -227,10 +224,10 @@ Current user message:
 Rules:
 1. Always stay kind, calm, and reassuring, especially if the user is in pain or anxious.
 2. Use the knowledge base and clinic info for all factual answers about services, hours, pricing style, and policies.
-3. If you don’t know something (like exact prices), say so honestly and suggest calling or WhatsApping the clinic.
-4. Match the user’s language and tone:
+3. If you don't know something (like exact prices), say so honestly and suggest calling or WhatsApping the clinic.
+4. Match the user's language and tone:
    - If they use Hindi or Hinglish, reply in friendly Hinglish.
-   -If they use Hindi , reply in friendly Hindi.
+   - If they use Hindi, reply in friendly Hindi.
    - If they use English, reply in natural Indian English.
 5. Keep responses short and focused: usually 2–3 sentences. Only go longer if the user clearly asks for detail.
 6. Do NOT use bold formatting (no **text**), markdown, or bullet points in your actual reply. Just plain text.
@@ -238,8 +235,7 @@ Rules:
    - "Shall we book a visit?"
    - "Would you like to fix an appointment for this?"
    - "If you want, I can help you plan a visit."
-8. For location queries, include this exact sentence in your own words:
-   We are located at: 124/505, Vikramaditya Marg, Mansarovar, Jaipur. You can view us on Maps here: https://www.google.com/maps?q=old+glory+jaipur
+8. For location queries, include this exact sentence in your own words: We are located at: 124/505, Vikramaditya Marg, Mansarovar, Jaipur. You can view us on Maps here: https://www.google.com/maps?q=old+glory+jaipur
 9. Never give emergency medical advice beyond suggesting urgent in-person visit or calling the clinic.
 
 Your task:
@@ -340,14 +336,10 @@ function retrieveDoctorDetailsNode(state: typeof AgentState.State) {
   };
 }
 
-function bookingRedirectNode(state: typeof AgentState.State) {
+function bookingFormNode() {
   const responseText = "Great! Let me help you book an appointment. Please provide:";
   
   return {
-    chat_history: [
-      { role: "user", content: state.user_message },
-      { role: "assistant", content: responseText }
-    ],
     final_response: {
       type: "booking_form",
       text: responseText,
@@ -373,6 +365,73 @@ function bookingRedirectNode(state: typeof AgentState.State) {
   };
 }
 
+async function bookingConfirmationNode(state: typeof AgentState.State) {
+  const msg = state.user_message;
+  let responseText = "Thank you! We have received your request.";
+  let name = "";
+  let phone = "";
+  
+  try {
+    const parts = msg.split("_");
+    const nameIndex = parts.indexOf("NAME");
+    const phoneIndex = parts.indexOf("PHONE");
+    
+    if (nameIndex > -1 && phoneIndex > -1) {
+      name = parts.slice(nameIndex + 1, phoneIndex).join(" ");
+      phone = parts.slice(phoneIndex + 1).join(" ");
+      
+     
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+        const bookingResponse = await fetch(`${baseUrl}/api/chatbook`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+          patientName: name,
+          phoneNumber: phone,
+          bookingTimestamp: new Date().toLocaleString('en-IN', { 
+            timeZone: 'Asia/Kolkata',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          }),
+          bookingSource: "Chatbot",
+          appointmentStatus: "Pending Call"
+          }),
+        });
+        
+        const result = await bookingResponse.json();
+        
+        if (result.result === 'success' || result === 'Added') {
+          responseText = `Thanks ${name}! ✅\n\nWe have received your booking request.\n\nOur team will call you at ${phone} shortly to confirm your appointment.\n\n📞 Expect a call within 2 hours during clinic hours (Mon-Sat, 10:30 AM - 2 PM & 6 PM - 8 PM).`;
+        } else {
+          responseText = `Thanks ${name}! We have received your request for ${phone}.\n\nOur clinic staff will call you shortly to confirm your appointment.`;
+        }
+      } catch (apiError) {
+        console.error("Booking API error:", apiError);
+        responseText = `Thanks ${name}! We have your details (${phone}).\n\nOur team will reach out to you soon. If urgent, please call +91 88757 00500.`;
+      }
+    }
+  } catch (e) {
+    console.error("Parsing error", e);
+    responseText = "Thank you for your interest! Please call us at +91 88757 00500 to book your appointment.";
+  }
+
+  return {
+    chat_history: [
+      { role: "user", content: state.user_message },
+      { role: "assistant", content: responseText }
+    ],
+    final_response: {
+      type: "text",
+      text: responseText,
+      buttons: [{ label: "Start New Chat", payload: "INIT_CHAT" }]
+    }
+  };
+}
+
 function serviceInfoNode(state: typeof AgentState.State) {
   const responseText = "We specialize in:\n\n✨ Cosmetic: Smile Makeovers & Veneers\n🦷 Restorative: Painless Root Canals & Implants\n⚙️ Ortho: Braces & Aligners\n🛡️ General: Laser Dentistry & Kids Care\n\nDr. Ridam & Dr. Tanmay ensure every procedure is gentle.";
   
@@ -390,7 +449,7 @@ function serviceInfoNode(state: typeof AgentState.State) {
 }
 
 function emergencyNode(state: typeof AgentState.State) {
-  const responseText = "🚨 We are here for you.\n\nIf you are in pain, please visit us in Mansarovar immediately or call us.\n\n📍 [Get Directions](https://www.google.com/maps?q=old+glory+jaipur)\n📞 +91 88757 00500";
+  const responseText = "🚨 We are here for you.\n\nIf you are in pain, please visit us in Mansarovar immediately or call us.\n\n📞 +91 88757 00500";
   
   return {
     chat_history: [
@@ -414,7 +473,8 @@ const workflow = new StateGraph(AgentState)
   .addNode("welcome", welcomeMessageNode)
   .addNode("find_doctor", retrieveDoctorProfileNode)
   .addNode("doctor_details", retrieveDoctorDetailsNode)
-  .addNode("booking_redirect", bookingRedirectNode)
+  .addNode("booking_form", bookingFormNode)
+  .addNode("booking_confirm", bookingConfirmationNode)
   .addNode("services", serviceInfoNode)
   .addNode("emergency", emergencyNode)
   .addNode("general", generalChatNode);
@@ -424,7 +484,8 @@ const routeIntent = (state: typeof AgentState.State) => {
     welcome: "welcome",
     find_doctor: "find_doctor",
     doctor_details: "doctor_details",
-    booking_redirect: "booking_redirect",
+    booking_form_request: "booking_form",
+    booking_submission: "booking_confirm",
     services_list: "services",
     emergency: "emergency",
     general_chat: "retriever",
@@ -436,7 +497,7 @@ workflow.addEdge("__start__", "classifier");
 workflow.addConditionalEdges("classifier", routeIntent);
 workflow.addEdge("retriever", "general");
 
-["welcome", "find_doctor", "doctor_details", "booking_redirect", "services", "emergency", "general"].forEach((node: any) => {
+["welcome", "find_doctor", "doctor_details", "booking_form", "booking_confirm", "services", "emergency", "general"].forEach((node: any) => {
   workflow.addEdge(node, END);
 });
 
